@@ -1,0 +1,47 @@
+@font-face {
+    font-family: 'NotoSans';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('/NotoSans-Light.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'NotoSans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/NotoSans-Regular.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'NotoSans';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/NotoSans-Bold.woff2') format('woff2');
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+p, button {
+    font-family: NotoSans;
+}
+
+a {
+    text-decoration: none;
+}
+
+img, svg {
+    vertical-align: bottom;
+}
+button {
+    cursor: pointer;
+    border: none;
+    font-size: 1em;
+}
