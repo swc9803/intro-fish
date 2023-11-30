@@ -132,43 +132,12 @@ const loadSign = () => {
   });
 };
 // projectImage
-const loadImage = () => {
-  const texture = new THREE.TextureLoader().load("/test_img.jpg");
-  const material = new THREE.MeshBasicMaterial({ map: texture });
-  const geometry = new THREE.PlaneGeometry(8, 5);
-  const mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
-  mesh.position.set(0, 3, 0);
-  mesh.rotation.x = -Math.PI;
-
-  const frameMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
-  const frameThickness = 0.2; // 두께
-
-  const frameParts = [
-    new THREE.Mesh(
-      new THREE.BoxGeometry(8, frameThickness, frameThickness),
-      frameMaterial,
-    ), // 상단
-    new THREE.Mesh(
-      new THREE.BoxGeometry(8, frameThickness, frameThickness),
-      frameMaterial,
-    ), // 하단
-    new THREE.Mesh(
-      new THREE.BoxGeometry(frameThickness, 5, frameThickness),
-      frameMaterial,
-    ), // 좌측
-    new THREE.Mesh(
-      new THREE.BoxGeometry(frameThickness, 5, frameThickness),
-      frameMaterial,
-    ), // 우측
-  ];
-
-  frameParts[0].position.set(0, 5, 0); // 상단
-  frameParts[1].position.set(0, 2.5, 0); // 하단
-  frameParts[2].position.set(-4, 3, 0); // 좌측
-  frameParts[3].position.set(4, 3, 0); // 우측
-
-  frameParts.forEach((part) => scene.add(part));
+const loadFrame = () => {
+  gltfLoader.load("/frame.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI;
+    gltf.scene.position.set(0, 0, 0);
+    scene.add(gltf.scene);
+  });
 };
 
 const onResize = () => {
@@ -354,7 +323,7 @@ onMounted(async () => {
   loadLight();
   loadFish();
   loadSign();
-  loadImage();
+  loadFrame();
 
   camera = new THREE.PerspectiveCamera(
     80,
