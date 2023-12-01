@@ -49,7 +49,7 @@ let mixer;
 let fish;
 let chest1, chest2, chest3, chest4;
 
-const fishSpeed = 8;
+const fishSpeed = 28;
 const cameraY = 15; // obj로부터의 카메라 높이
 const cameraZ = 13; // obj로부터의 카메라 거리
 
@@ -61,21 +61,32 @@ scene.fog = new THREE.FogExp2(0x00bfff, 0.02); // 밀도
 
 // 바닥
 const floorGeometry = new THREE.PlaneGeometry(200, 100);
-const floorMaterial = new THREE.MeshBasicMaterial({ color: 0x00bfff });
+const floorMaterial = new THREE.MeshPhongMaterial({
+  color: 0x00bfff,
+  side: THREE.DoubleSide,
+});
 const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+floor.receiveShadow = true;
 floor.rotation.set(-Math.PI / 2, 0, 0);
 floor.position.set(0, -1, -35);
 scene.add(floor);
 
 // light
 const loadLight = () => {
-  const ambientLight = new THREE.AmbientLight(0x8ae2ff, 0.4);
+  // const ambientLight = new THREE.AmbientLight(0x8ae2ff, 0.4);
   const directionalLight = new THREE.DirectionalLight(0x8ae2ff, 5);
+  directionalLight.castShadow = true;
   directionalLight.position.set(15, 30, -20);
   directionalLight.target.position.set(-5, 0, -5);
-  scene.add(ambientLight);
+  // scene.add(ambientLight);
   scene.add(directionalLight);
   scene.add(directionalLight.target);
+
+  const directionalLightHelper = new THREE.DirectionalLightHelper(
+    directionalLight,
+    10,
+  );
+  scene.add(directionalLightHelper);
 };
 
 const gltfLoader = new GLTFLoader();
@@ -134,18 +145,36 @@ const loadSign = () => {
 // projectImage
 const loadFrame = () => {
   gltfLoader.load("/projects/frame-tommy1.glb", (gltf) => {
-    gltf.scene.rotation.y = Math.PI;
-    gltf.scene.position.set(0, 0, 0);
+    gltf.scene.rotation.y = Math.PI * 0.95;
+    gltf.scene.position.set(-24, 0, -50);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+        node.receiveShadow = true;
+      }
+    });
     scene.add(gltf.scene);
   });
   gltfLoader.load("/projects/frame-tommy2.glb", (gltf) => {
-    gltf.scene.rotation.y = Math.PI;
-    gltf.scene.position.set(0, 0, 5);
+    gltf.scene.rotation.y = Math.PI * 0.95;
+    gltf.scene.position.set(-37, 0, -50);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+        node.receiveShadow = true;
+      }
+    });
     scene.add(gltf.scene);
   });
   gltfLoader.load("/projects/frame-tommy3.glb", (gltf) => {
-    gltf.scene.rotation.y = Math.PI;
-    gltf.scene.position.set(0, 0, -5);
+    gltf.scene.rotation.y = Math.PI * 0.95;
+    gltf.scene.position.set(-50, 0, -50);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+        node.receiveShadow = true;
+      }
+    });
     scene.add(gltf.scene);
   });
 };
@@ -219,7 +248,7 @@ const animate = () => {
 
     if (intersects.length > 0) {
       const intersectionPoint = intersects[0].point;
-      console.log("클릭 좌표:", intersectionPoint);
+      // console.log("클릭 좌표:", intersectionPoint);
 
       const distance = fish.position.distanceTo(intersectionPoint);
       const duration = distance / fishSpeed;
@@ -323,6 +352,7 @@ const animate = () => {
 
 onMounted(async () => {
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.shadowMap.enabled = true;
 
   [chest1, chest2, chest3, chest4] = await Promise.all([
     loadChest(15, 15),
