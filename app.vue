@@ -50,14 +50,14 @@ let fish;
 let chest1, chest2, chest3, chest4;
 
 const fishSpeed = 28;
-const cameraY = 15; // obj로부터의 카메라 높이
-const cameraZ = 13; // obj로부터의 카메라 거리
+const cameraY = 17; // obj로부터의 카메라 높이
+const cameraZ = 14; // obj로부터의 카메라 거리
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0c6ceb);
 
 // 안개
-scene.fog = new THREE.FogExp2(0x00bfff, 0.02); // 밀도
+scene.fog = new THREE.FogExp2(0x00bfff, 0.02);
 
 // 바닥
 const floorGeometry = new THREE.PlaneGeometry(200, 100);
@@ -68,13 +68,13 @@ const floorMaterial = new THREE.MeshPhongMaterial({
 const floor = new THREE.Mesh(floorGeometry, floorMaterial);
 floor.receiveShadow = true;
 floor.rotation.set(-Math.PI / 2, 0, 0);
-floor.position.set(0, -1, -35);
+floor.position.set(0, 0, -35);
 scene.add(floor);
 
 // light
 const loadLight = () => {
-  const ambientLight = new THREE.AmbientLight(0x8ae2ff, 0.4);
-  const directionalLight = new THREE.DirectionalLight(0x8ae2ff, 5);
+  const ambientLight = new THREE.AmbientLight(0x8ae2ff, 0.8);
+  const directionalLight = new THREE.DirectionalLight(0x8ae2ff, 4);
   directionalLight.castShadow = true;
   directionalLight.position.set(100, 150, -85);
   directionalLight.target.position.set(0, 0, -35);
@@ -85,17 +85,10 @@ const loadLight = () => {
   directionalLight.shadow.camera.bottom = -100;
   directionalLight.shadow.mapSize.width = 2048;
   directionalLight.shadow.mapSize.height = 2048;
-  directionalLight.shadow.radius = 10;
 
   scene.add(ambientLight);
   scene.add(directionalLight);
   scene.add(directionalLight.target);
-
-  const directionalLightHelper = new THREE.DirectionalLightHelper(
-    directionalLight,
-    10,
-  );
-  scene.add(directionalLightHelper);
 };
 
 const gltfLoader = new GLTFLoader();
@@ -129,6 +122,7 @@ const loadFish = () => {
   gltfLoader.load("/fish.glb", (gltf) => {
     fish = gltf.scene;
     fish.rotation.set(0, Math.PI, 0);
+    fish.position.y = 1;
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -149,11 +143,21 @@ const loadSign = () => {
   gltfLoader.load("/sign-projects.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
     gltf.scene.position.set(-10, 0, -20);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
     scene.add(gltf.scene);
   });
   gltfLoader.load("/sign-about.glb", (gltf) => {
-    gltf.scene.rotation.y = Math.PI / 2.5;
+    gltf.scene.rotation.y = Math.PI * 0.45;
     gltf.scene.position.set(10, 0, -30);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
     scene.add(gltf.scene);
   });
 };
@@ -161,31 +165,33 @@ const loadSign = () => {
 const loadFrame = () => {
   gltfLoader.load("/projects/frame-tommy1.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.95;
-    gltf.scene.position.set(-24, -1, -50);
-    // gltf.scene.position.set(0, 7, -5);
+    gltf.scene.position.set(-24, 0, -50);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
+        node.receiveShadow = true;
       }
     });
     scene.add(gltf.scene);
   });
   gltfLoader.load("/projects/frame-tommy2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.95;
-    gltf.scene.position.set(-37, -1, -50);
+    gltf.scene.position.set(-37, 0, -50);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
+        node.receiveShadow = true;
       }
     });
     scene.add(gltf.scene);
   });
   gltfLoader.load("/projects/frame-tommy3.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.95;
-    gltf.scene.position.set(-50, -1, -50);
+    gltf.scene.position.set(-50, 0, -50);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
+        node.receiveShadow = true;
       }
     });
     scene.add(gltf.scene);
@@ -369,7 +375,7 @@ onMounted(async () => {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   [chest1, chest2, chest3, chest4] = await Promise.all([
-    loadChest(15, 15),
+    loadChest(-37, -57),
     loadChest(-15, 15),
     loadChest(15, -15),
     loadChest(-15, -15),
@@ -380,7 +386,7 @@ onMounted(async () => {
   loadFrame();
 
   camera = new THREE.PerspectiveCamera(
-    80,
+    75,
     canvasRef.value.offsetWidth / canvasRef.value.offsetHeight,
     0.1,
     1000,
