@@ -112,6 +112,11 @@ const loadChest = (x, z) => {
       chest.scene.scale.set(0.02, 0.02, 0.02);
       chest.scene.rotation.y = Math.PI;
       chest.scene.position.set(x, 0, z);
+      chest.scene.traverse((node) => {
+        if (node.isMesh) {
+          node.castShadow = true;
+        }
+      });
       scene.add(chest.scene);
       resolve(chest);
     });
@@ -164,34 +169,34 @@ const loadSign = () => {
 // projectImage
 const loadFrame = () => {
   gltfLoader.load("/projects/frame-tommy1.glb", (gltf) => {
-    gltf.scene.rotation.y = Math.PI * 0.95;
-    gltf.scene.position.set(-24, 0, -50);
+    gltf.scene.rotation.y = Math.PI * 1.1;
+    gltf.scene.position.set(-24, 0, -52);
+    gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
-        node.receiveShadow = true;
       }
     });
     scene.add(gltf.scene);
   });
   gltfLoader.load("/projects/frame-tommy2.glb", (gltf) => {
-    gltf.scene.rotation.y = Math.PI * 0.95;
-    gltf.scene.position.set(-37, 0, -50);
+    gltf.scene.rotation.y = Math.PI;
+    gltf.scene.position.set(-37, 0, -49.5);
+    gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
-        node.receiveShadow = true;
       }
     });
     scene.add(gltf.scene);
   });
   gltfLoader.load("/projects/frame-tommy3.glb", (gltf) => {
-    gltf.scene.rotation.y = Math.PI * 0.95;
-    gltf.scene.position.set(-50, 0, -50);
+    gltf.scene.rotation.y = Math.PI * 0.9;
+    gltf.scene.position.set(-50, 0, -52);
+    gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
-        node.receiveShadow = true;
       }
     });
     scene.add(gltf.scene);
