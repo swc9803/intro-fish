@@ -133,9 +133,19 @@ const loadSign = () => {
 };
 // projectImage
 const loadFrame = () => {
-  gltfLoader.load("/frame.glb", (gltf) => {
+  gltfLoader.load("/projects/frame-tommy1.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
     gltf.scene.position.set(0, 0, 0);
+    scene.add(gltf.scene);
+  });
+  gltfLoader.load("/projects/frame-tommy2.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI;
+    gltf.scene.position.set(0, 0, 5);
+    scene.add(gltf.scene);
+  });
+  gltfLoader.load("/projects/frame-tommy3.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI;
+    gltf.scene.position.set(0, 0, -5);
     scene.add(gltf.scene);
   });
 };
