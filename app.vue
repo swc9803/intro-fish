@@ -73,12 +73,21 @@ scene.add(floor);
 
 // light
 const loadLight = () => {
-  // const ambientLight = new THREE.AmbientLight(0x8ae2ff, 0.4);
+  const ambientLight = new THREE.AmbientLight(0x8ae2ff, 0.4);
   const directionalLight = new THREE.DirectionalLight(0x8ae2ff, 5);
   directionalLight.castShadow = true;
-  directionalLight.position.set(15, 30, -20);
-  directionalLight.target.position.set(-5, 0, -5);
-  // scene.add(ambientLight);
+  directionalLight.position.set(100, 150, -85);
+  directionalLight.target.position.set(0, 0, -35);
+
+  directionalLight.shadow.camera.left = -100;
+  directionalLight.shadow.camera.right = 100;
+  directionalLight.shadow.camera.top = 100;
+  directionalLight.shadow.camera.bottom = -100;
+  directionalLight.shadow.mapSize.width = 2048;
+  directionalLight.shadow.mapSize.height = 2048;
+  directionalLight.shadow.radius = 10;
+
+  scene.add(ambientLight);
   scene.add(directionalLight);
   scene.add(directionalLight.target);
 
@@ -120,6 +129,12 @@ const loadFish = () => {
   gltfLoader.load("/fish.glb", (gltf) => {
     fish = gltf.scene;
     fish.rotation.set(0, Math.PI, 0);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+        node.receiveShadow = true;
+      }
+    });
     scene.add(fish);
     // mixer = new THREE.AnimationMixer(gltf.scene);
     // const action = mixer.clipAction(gltf.animations[0]);
@@ -146,33 +161,31 @@ const loadSign = () => {
 const loadFrame = () => {
   gltfLoader.load("/projects/frame-tommy1.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.95;
-    gltf.scene.position.set(-24, 0, -50);
+    gltf.scene.position.set(-24, -1, -50);
+    // gltf.scene.position.set(0, 7, -5);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
-        node.receiveShadow = true;
       }
     });
     scene.add(gltf.scene);
   });
   gltfLoader.load("/projects/frame-tommy2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.95;
-    gltf.scene.position.set(-37, 0, -50);
+    gltf.scene.position.set(-37, -1, -50);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
-        node.receiveShadow = true;
       }
     });
     scene.add(gltf.scene);
   });
   gltfLoader.load("/projects/frame-tommy3.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.95;
-    gltf.scene.position.set(-50, 0, -50);
+    gltf.scene.position.set(-50, -1, -50);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
-        node.receiveShadow = true;
       }
     });
     scene.add(gltf.scene);
@@ -353,6 +366,7 @@ const animate = () => {
 onMounted(async () => {
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   [chest1, chest2, chest3, chest4] = await Promise.all([
     loadChest(15, 15),
