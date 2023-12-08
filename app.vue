@@ -15,7 +15,7 @@
       <transition name="fade">
         <div v-show="openBox === index + 1" class="content-wrapper">
           <p>{{ content.name }}</p>
-          <button @click="moveToPage(content.route)">보러가기</button>
+          <button @click="moveToPage(content.route)">Enter</button>
         </div>
       </transition>
     </div>
@@ -41,6 +41,7 @@ const moveToPage = (route) => {
 
 const canvasRef = ref();
 const openBox = ref(0);
+let loadedModel = 0;
 
 let renderer;
 let camera;
@@ -76,13 +77,13 @@ const loadLight = () => {
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
   const directionalLight = new THREE.DirectionalLight(0xf8f8ff, 4);
   directionalLight.castShadow = true;
-  directionalLight.position.set(100, 150, -85);
-  directionalLight.target.position.set(0, 0, -35);
+  directionalLight.position.set(0, 150, -85);
+  directionalLight.target.position.set(-100, 0, -35);
 
-  directionalLight.shadow.camera.left = -100;
-  directionalLight.shadow.camera.right = 100;
-  directionalLight.shadow.camera.top = 100;
-  directionalLight.shadow.camera.bottom = -100;
+  directionalLight.shadow.camera.left = -140;
+  directionalLight.shadow.camera.right = 140;
+  directionalLight.shadow.camera.top = 140;
+  directionalLight.shadow.camera.bottom = -140;
   directionalLight.shadow.mapSize.width = 2048;
   directionalLight.shadow.mapSize.height = 2048;
 
@@ -118,6 +119,9 @@ const loadChest = (x, z) => {
         }
       });
       scene.add(chest.scene);
+
+      loadedModel++;
+
       resolve(chest);
     });
   });
@@ -127,7 +131,7 @@ const loadFish = () => {
   gltfLoader.load("/fish.glb", (gltf) => {
     fish = gltf.scene;
     fish.rotation.set(0, Math.PI, 0);
-    fish.position.y = 1;
+    fish.position.y = 2.5;
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -135,6 +139,9 @@ const loadFish = () => {
       }
     });
     scene.add(fish);
+
+    loadedModel++;
+
     // mixer = new THREE.AnimationMixer(gltf.scene);
     // const action = mixer.clipAction(gltf.animations[0]);
     // console.log(mixer.clipAction(gltf.animations));
@@ -154,6 +161,8 @@ const loadSign = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
   gltfLoader.load("/sign-about.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.4;
@@ -164,6 +173,8 @@ const loadSign = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
   gltfLoader.load("/sign-playground.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.025;
@@ -174,6 +185,8 @@ const loadSign = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
 };
 // projectImage
@@ -181,7 +194,7 @@ const loadFrame = () => {
   // portfolio
   gltfLoader.load("/projects/frame-pofo1.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 1.1;
-    gltf.scene.position.set(-55, 0, -20);
+    gltf.scene.position.set(-45, 0, -20);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -189,10 +202,12 @@ const loadFrame = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
   gltfLoader.load("/projects/frame-pofo2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
-    gltf.scene.position.set(-68, 0, -17.5);
+    gltf.scene.position.set(-58, 0, -17.5);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -200,10 +215,12 @@ const loadFrame = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
   gltfLoader.load("/projects/frame-pofo3.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.9;
-    gltf.scene.position.set(-81, 0, -20);
+    gltf.scene.position.set(-71, 0, -20);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -211,11 +228,13 @@ const loadFrame = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
   // tommy
   gltfLoader.load("/projects/frame-tommy1.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 1.1;
-    gltf.scene.position.set(-110, 0, -20);
+    gltf.scene.position.set(-100, 0, -20);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -223,10 +242,12 @@ const loadFrame = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
   gltfLoader.load("/projects/frame-tommy2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
-    gltf.scene.position.set(-123, 0, -17.5);
+    gltf.scene.position.set(-113, 0, -17.5);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -234,10 +255,12 @@ const loadFrame = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
   gltfLoader.load("/projects/frame-tommy3.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.9;
-    gltf.scene.position.set(-136, 0, -20);
+    gltf.scene.position.set(-126, 0, -20);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -245,11 +268,13 @@ const loadFrame = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
   // lotteria
   gltfLoader.load("/projects/frame-lotteria1.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 1.1;
-    gltf.scene.position.set(-165, 0, -20);
+    gltf.scene.position.set(-155, 0, -20);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -257,10 +282,12 @@ const loadFrame = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
   gltfLoader.load("/projects/frame-lotteria2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
-    gltf.scene.position.set(-178, 0, -17.5);
+    gltf.scene.position.set(-168, 0, -17.5);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -268,10 +295,12 @@ const loadFrame = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
   gltfLoader.load("/projects/frame-lotteria3.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.9;
-    gltf.scene.position.set(-191, 0, -20);
+    gltf.scene.position.set(-181, 0, -20);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -279,11 +308,13 @@ const loadFrame = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
   // gallery
   gltfLoader.load("/projects/frame-gallery1.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 1.1;
-    gltf.scene.position.set(-220, 0, -20);
+    gltf.scene.position.set(-210, 0, -20);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -291,10 +322,12 @@ const loadFrame = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
   gltfLoader.load("/projects/frame-gallery2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
-    gltf.scene.position.set(-233, 0, -17.5);
+    gltf.scene.position.set(-223, 0, -17.5);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -302,10 +335,12 @@ const loadFrame = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
   });
   gltfLoader.load("/projects/frame-gallery3.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.9;
-    gltf.scene.position.set(-246, 0, -20);
+    gltf.scene.position.set(-236, 0, -20);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -313,6 +348,24 @@ const loadFrame = () => {
       }
     });
     scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+};
+
+const loadDecoration = () => {
+  gltfLoader.load("/construction.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI * 1.05;
+    gltf.scene.position.set(60, 0, -23);
+    gltf.scene.scale.set(7, 7, 7);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
   });
 };
 
@@ -337,28 +390,40 @@ const mouse = new THREE.Vector2();
 
 const isClicked = ref(false);
 const onMouseDown = (e) => {
-  isClicked.value = true;
-  mouse.x = (e.clientX / canvasRef.value.offsetWidth) * 2 - 1;
-  mouse.y = -(e.clientY / canvasRef.value.offsetHeight) * 2 + 1;
+  if (loadedModel >= 21) {
+    isClicked.value = true;
+    mouse.x = (e.clientX / canvasRef.value.offsetWidth) * 2 - 1;
+    mouse.y = -(e.clientY / canvasRef.value.offsetHeight) * 2 + 1;
+  }
 };
 const onMouseMove = (e) => {
-  mouse.x = (e.clientX / canvasRef.value.offsetWidth) * 2 - 1;
-  mouse.y = -(e.clientY / canvasRef.value.offsetHeight) * 2 + 1;
+  if (loadedModel >= 21) {
+    mouse.x = (e.clientX / canvasRef.value.offsetWidth) * 2 - 1;
+    mouse.y = -(e.clientY / canvasRef.value.offsetHeight) * 2 + 1;
+  }
 };
 const onMouseUp = () => {
-  isClicked.value = false;
+  if (loadedModel >= 21) {
+    isClicked.value = false;
+  }
 };
 const onTouchStart = (e) => {
-  isClicked.value = true;
-  mouse.x = (e.touches[0].clientX / canvasRef.value.offsetWidth) * 2 - 1;
-  mouse.y = -(e.touches[0].clientY / canvasRef.value.offsetHeight) * 2 + 1;
+  if (loadedModel >= 21) {
+    isClicked.value = true;
+    mouse.x = (e.touches[0].clientX / canvasRef.value.offsetWidth) * 2 - 1;
+    mouse.y = -(e.touches[0].clientY / canvasRef.value.offsetHeight) * 2 + 1;
+  }
 };
 const onTouchMove = (e) => {
-  mouse.x = (e.touches[0].clientX / canvasRef.value.offsetWidth) * 2 - 1;
-  mouse.y = -(e.touches[0].clientY / canvasRef.value.offsetHeight) * 2 + 1;
+  if (loadedModel >= 21) {
+    mouse.x = (e.touches[0].clientX / canvasRef.value.offsetWidth) * 2 - 1;
+    mouse.y = -(e.touches[0].clientY / canvasRef.value.offsetHeight) * 2 + 1;
+  }
 };
 const onTouchEnd = () => {
-  isClicked.value = false;
+  if (loadedModel >= 21) {
+    isClicked.value = false;
+  }
 };
 
 const offset = new THREE.Vector3(0, cameraY, -cameraZ);
@@ -492,15 +557,16 @@ onMounted(async () => {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   [chest1, chest2, chest3, chest4] = await Promise.all([
-    loadChest(-68, -27),
-    loadChest(-123, -27),
-    loadChest(-178, -27),
-    loadChest(-233, -27),
+    loadChest(-58, -27),
+    loadChest(-113, -27),
+    loadChest(-168, -27),
+    loadChest(-223, -27),
   ]);
   loadLight();
   loadFish();
   loadSign();
   loadFrame();
+  loadDecoration();
 
   camera = new THREE.PerspectiveCamera(
     75,
