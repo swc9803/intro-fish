@@ -29,10 +29,10 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 const contents = [
-  { name: "포트폴리오", route: "newsungpf.firebaseapp.com" },
-  { name: "갤러리", route: "sung-gallery.firebaseapp.com" },
-  { name: "깃허브", route: "github.com/swc9803" },
-  { name: "코드팬", route: "codepen.io/swc9803" },
+  { name: "New Portfolio", route: "renewalsungpofo.firebaseapp.com" },
+  { name: "Tommy Future esthetic", route: "amazing-prototype.firebaseapp.com" },
+  { name: "Lotteria Font", route: "lotteriafont.com" },
+  { name: "Sung's gallery", route: "sung-gallery.firebaseapp.com" },
 ];
 
 const moveToPage = (route) => {
@@ -50,8 +50,8 @@ let fish;
 let chest1, chest2, chest3, chest4;
 
 const fishSpeed = 28;
-const cameraY = 17; // obj로부터의 카메라 높이
-const cameraZ = 14; // obj로부터의 카메라 거리
+const cameraY = 17; // 카메라 높이
+const cameraZ = 14; // 카메라 거리
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0c6ceb);
@@ -60,7 +60,7 @@ scene.background = new THREE.Color(0x0c6ceb);
 scene.fog = new THREE.FogExp2(0x00bfff, 0.02);
 
 // 바닥
-const floorGeometry = new THREE.PlaneGeometry(200, 100);
+const floorGeometry = new THREE.PlaneGeometry(350, 70);
 const floorMaterial = new THREE.MeshPhongMaterial({
   color: 0x00bfff,
   side: THREE.DoubleSide,
@@ -68,13 +68,13 @@ const floorMaterial = new THREE.MeshPhongMaterial({
 const floor = new THREE.Mesh(floorGeometry, floorMaterial);
 floor.receiveShadow = true;
 floor.rotation.set(-Math.PI / 2, 0, 0);
-floor.position.set(0, 0, -35);
+floor.position.set(-100, 0, -30);
 scene.add(floor);
 
 // light
 const loadLight = () => {
-  const ambientLight = new THREE.AmbientLight(0x8ae2ff, 0.8);
-  const directionalLight = new THREE.DirectionalLight(0x8ae2ff, 4);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+  const directionalLight = new THREE.DirectionalLight(0xf8f8ff, 4);
   directionalLight.castShadow = true;
   directionalLight.position.set(100, 150, -85);
   directionalLight.target.position.set(0, 0, -35);
@@ -109,7 +109,7 @@ const loadChest = (x, z) => {
         });
       }
 
-      chest.scene.scale.set(0.02, 0.02, 0.02);
+      chest.scene.scale.set(0.03, 0.03, 0.03);
       chest.scene.rotation.y = Math.PI;
       chest.scene.position.set(x, 0, z);
       chest.scene.traverse((node) => {
@@ -146,8 +146,8 @@ const loadFish = () => {
 // sign
 const loadSign = () => {
   gltfLoader.load("/sign-projects.glb", (gltf) => {
-    gltf.scene.rotation.y = Math.PI;
-    gltf.scene.position.set(-10, 0, -20);
+    gltf.scene.rotation.y = Math.PI * 0.975;
+    gltf.scene.position.set(-15, 0, -20);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -156,8 +156,18 @@ const loadSign = () => {
     scene.add(gltf.scene);
   });
   gltfLoader.load("/sign-about.glb", (gltf) => {
-    gltf.scene.rotation.y = Math.PI * 0.45;
+    gltf.scene.rotation.y = Math.PI * 0.4;
     gltf.scene.position.set(10, 0, -30);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+  });
+  gltfLoader.load("/sign-playground.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI * 0.025;
+    gltf.scene.position.set(15, 0, -20);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -168,9 +178,44 @@ const loadSign = () => {
 };
 // projectImage
 const loadFrame = () => {
+  // portfolio
+  gltfLoader.load("/projects/frame-pofo1.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI * 1.1;
+    gltf.scene.position.set(-55, 0, -20);
+    gltf.scene.scale.set(1.1, 1.1, 1.1);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+  });
+  gltfLoader.load("/projects/frame-pofo2.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI;
+    gltf.scene.position.set(-68, 0, -17.5);
+    gltf.scene.scale.set(1.1, 1.1, 1.1);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+  });
+  gltfLoader.load("/projects/frame-pofo3.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI * 0.9;
+    gltf.scene.position.set(-81, 0, -20);
+    gltf.scene.scale.set(1.1, 1.1, 1.1);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+  });
+  // tommy
   gltfLoader.load("/projects/frame-tommy1.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 1.1;
-    gltf.scene.position.set(-24, 0, -52);
+    gltf.scene.position.set(-110, 0, -20);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -181,7 +226,7 @@ const loadFrame = () => {
   });
   gltfLoader.load("/projects/frame-tommy2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
-    gltf.scene.position.set(-37, 0, -49.5);
+    gltf.scene.position.set(-123, 0, -17.5);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -192,7 +237,75 @@ const loadFrame = () => {
   });
   gltfLoader.load("/projects/frame-tommy3.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.9;
-    gltf.scene.position.set(-50, 0, -52);
+    gltf.scene.position.set(-136, 0, -20);
+    gltf.scene.scale.set(1.1, 1.1, 1.1);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+  });
+  // lotteria
+  gltfLoader.load("/projects/frame-lotteria1.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI * 1.1;
+    gltf.scene.position.set(-165, 0, -20);
+    gltf.scene.scale.set(1.1, 1.1, 1.1);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+  });
+  gltfLoader.load("/projects/frame-lotteria2.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI;
+    gltf.scene.position.set(-178, 0, -17.5);
+    gltf.scene.scale.set(1.1, 1.1, 1.1);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+  });
+  gltfLoader.load("/projects/frame-lotteria3.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI * 0.9;
+    gltf.scene.position.set(-191, 0, -20);
+    gltf.scene.scale.set(1.1, 1.1, 1.1);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+  });
+  // gallery
+  gltfLoader.load("/projects/frame-gallery1.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI * 1.1;
+    gltf.scene.position.set(-220, 0, -20);
+    gltf.scene.scale.set(1.1, 1.1, 1.1);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+  });
+  gltfLoader.load("/projects/frame-gallery2.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI;
+    gltf.scene.position.set(-233, 0, -17.5);
+    gltf.scene.scale.set(1.1, 1.1, 1.1);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+  });
+  gltfLoader.load("/projects/frame-gallery3.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI * 0.9;
+    gltf.scene.position.set(-246, 0, -20);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -272,7 +385,6 @@ const animate = () => {
 
     if (intersects.length > 0) {
       const intersectionPoint = intersects[0].point;
-      // console.log("클릭 좌표:", intersectionPoint);
 
       const distance = fish.position.distanceTo(intersectionPoint);
       const duration = distance / fishSpeed;
@@ -380,10 +492,10 @@ onMounted(async () => {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   [chest1, chest2, chest3, chest4] = await Promise.all([
-    loadChest(-37, -57),
-    loadChest(-15, 15),
-    loadChest(15, -15),
-    loadChest(-15, -15),
+    loadChest(-68, -27),
+    loadChest(-123, -27),
+    loadChest(-178, -27),
+    loadChest(-233, -27),
   ]);
   loadLight();
   loadFish();
@@ -425,7 +537,7 @@ onBeforeUnmount(() => {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate3d(-50%, -50%, 0);
   width: 60%;
   height: 60%;
   pointer-events: none;
