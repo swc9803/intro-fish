@@ -1,23 +1,30 @@
 @font-face {
-    font-family: 'NotoSans';
+    font-family: "NanumSquare";
     font-style: normal;
     font-weight: 300;
     font-display: swap;
-    src: url('/NotoSans-Light.woff2') format('woff2');
+    src: url("/NanumSquareL.woff2") format("woff2");
 }
 @font-face {
-    font-family: 'NotoSans';
+    font-family: "NanumSquare";
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url('/NotoSans-Regular.woff2') format('woff2');
+    src: url("/NanumSquareR.woff2") format("woff2");
 }
 @font-face {
-    font-family: 'NotoSans';
+    font-family: "NanumSquare";
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: url('/NotoSans-Bold.woff2') format('woff2');
+    src: url("/NanumSquareB.woff2") format("woff2");
+}
+@font-face {
+    font-family: "NanumSquare";
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: url("/NanumSquareEB.woff2") format("woff2");
 }
 
 * {
@@ -30,7 +37,7 @@ body {
 }
 
 p, button {
-    font-family: NotoSans;
+    font-family: NanumSquare;
 }
 
 a {
@@ -40,6 +47,7 @@ a {
 img, svg {
     vertical-align: bottom;
 }
+
 button {
     cursor: pointer;
     border: none;
