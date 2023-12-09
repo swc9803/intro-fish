@@ -352,6 +352,32 @@ const loadFrame = () => {
     loadedModel++;
   });
 };
+const loadLogo = () => {
+  gltfLoader.load("/github.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI;
+    gltf.scene.position.set(10, 0.5, -55);
+    gltf.scene.scale.set(1.5, 1.5, 1.5);
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/github.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI;
+    gltf.scene.position.set(4, 0.5, -55);
+    gltf.scene.scale.set(1.5, 1.5, 1.5);
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/github.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI;
+    gltf.scene.position.set(-2, 0.5, -55);
+    gltf.scene.scale.set(1.5, 1.5, 1.5);
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+};
 
 const loadDecoration = () => {
   gltfLoader.load("/construction.glb", (gltf) => {
@@ -566,6 +592,7 @@ onMounted(async () => {
   loadFish();
   loadSign();
   loadFrame();
+  loadLogo();
   loadDecoration();
 
   camera = new THREE.PerspectiveCamera(
