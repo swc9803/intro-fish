@@ -14,12 +14,14 @@
     <div v-for="(content, index) in contents" :key="content" class="message">
       <transition name="fade">
         <div v-show="openBox === index + 1" class="content-wrapper">
-          <p>{{ content.name }}</p>
+          <p class="title">{{ content.name }}</p>
+          <div class="hr" />
+          <p class="description">{{ content.description }}</p>
           <video :ref="videoRef" muted loop>
             <source :src="content.webm" type="video/webm" />
             <source :src="content.mp4" type="video/mp4" />
           </video>
-          <button @click="moveToPage(content.route)">Enter</button>
+          <button @click="moveToPage(content.route)">ENTER</button>
         </div>
       </transition>
     </div>
@@ -45,24 +47,30 @@ const contents = [
   {
     name: "New Portfolio",
     route: "renewalsungpofo.firebaseapp",
+    description: "저의 모든 프로젝트를 볼 수 있는 포트폴리오 사이트입니다.",
     webm: pofoWebm,
     mp4: pofoMp4,
   },
   {
     name: "Tommy Future esthetic",
     route: "amazing-prototype.firebaseapp",
+    description:
+      "다양한 인터랙션 효과를 사용해 Esthetic 프로그램을 소개하는 사이트입니다.",
     webm: tommyWebm,
     mp4: tommyMp4,
   },
   {
     name: "Lotteria Font",
     route: "lotteriafont",
+    description:
+      "약 10만 명이 방문한 롯데리아의 새로운 폰트 출시를 기념해 제작한 사이트입니다.",
     webm: lotteriaWebm,
     mp4: lotteriaMp4,
   },
   {
     name: "LAW 24",
     route: "law24-prototype.firebaseapp",
+    description: "사용자와 변호사를 자동으로 매칭 시켜주는 사이트입니다.",
     webm: lawWebm,
     mp4: lawMp4,
   },
@@ -668,33 +676,91 @@ onBeforeUnmount(() => {
     width: 100%;
     height: 100%;
   }
-}
-.message {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate3d(-50%, -50%, 0);
-  width: 60%;
-  height: 60%;
-  pointer-events: none;
-  z-index: 3;
-  .content-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    height: 100%;
-    padding: 20px;
-    transform-origin: center;
-    text-align: center;
-    font-size: 2em;
-    color: white;
-    background: rgb(175, 175, 175);
-    opacity: 0.8;
-    button {
-      border-radius: 16px;
-      background: white;
-      pointer-events: auto;
+  .message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    width: 60%;
+    pointer-events: none;
+    z-index: 3;
+    @media (max-width: 768px) {
+      width: 95%;
+    }
+    .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      border-radius: 1em;
+      transform-origin: center;
+      background: rgb(46, 43, 41);
+      opacity: 0.8;
+      @media (max-width: 768px) {
+        padding: 40px 20px;
+      }
+      .title {
+        margin-bottom: 10px;
+        color: white;
+        font-size: 2em;
+        font-weight: 900;
+      }
+      .hr {
+        margin-bottom: 30px;
+        border-radius: 50%;
+        width: 140px;
+        height: 2px;
+        background: #ffffff;
+        @media (max-width: 768px) {
+          margin-bottom: 40px;
+        }
+      }
+      .description {
+        margin-bottom: 20px;
+        color: #ffffff;
+        font-size: 1.25em;
+        font-weight: 700;
+        line-height: 1.4em;
+        word-break: keep-all;
+        @media (max-width: 768px) {
+          margin-bottom: 60px;
+        }
+      }
+      video {
+        margin-bottom: 40px;
+        width: 50%;
+        object-fit: cover;
+        @media (max-width: 768px) {
+          margin-bottom: 100px;
+          width: 100%;
+        }
+      }
+      button {
+        border-radius: 16px;
+        width: 180px;
+        height: 60px;
+        color: #ffffff;
+        border: 1px solid #ffffff;
+        background: linear-gradient(
+          270deg,
+          rgba(255, 255, 255, 1),
+          rgba(255, 255, 255, 1),
+          rgba(209, 209, 209, 0.8),
+          rgba(102, 102, 102, 0),
+          rgba(0, 0, 0, 0)
+        );
+        background-position: 0 50%;
+        background-size: 350% 300%;
+        transition: all 0.5s ease-out;
+        pointer-events: auto;
+        font-size: 1.25em;
+        font-weight: 700;
+        &:hover {
+          color: black;
+          background-position: 100% 50%;
+        }
+      }
     }
   }
 }
