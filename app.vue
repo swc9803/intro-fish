@@ -15,6 +15,10 @@
       <transition name="fade">
         <div v-show="openBox === index + 1" class="content-wrapper">
           <p>{{ content.name }}</p>
+          <video :ref="videoRef" muted loop>
+            <source :src="content.webm" type="video/webm" />
+            <source :src="content.mp4" type="video/mp4" />
+          </video>
           <button @click="moveToPage(content.route)">Enter</button>
         </div>
       </transition>
@@ -28,11 +32,40 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
+import pofoMp4 from "@/assets/video/pofo-thumbnail.mp4";
+import pofoWebm from "@/assets/video/pofo-thumbnail.webm";
+import tommyMp4 from "@/assets/video/tommy-thumbnail.mp4";
+import tommyWebm from "@/assets/video/tommy-thumbnail.webm";
+import lotteriaMp4 from "@/assets/video/lotteria-thumbnail.mp4";
+import lotteriaWebm from "@/assets/video/lotteria-thumbnail.webm";
+import lawMp4 from "@/assets/video/law-thumbnail.mp4";
+import lawWebm from "@/assets/video/law-thumbnail.webm";
+
 const contents = [
-  { name: "New Portfolio", route: "renewalsungpofo.firebaseapp" },
-  { name: "Tommy Future esthetic", route: "amazing-prototype.firebaseapp" },
-  { name: "Lotteria Font", route: "lotteriafont" },
-  { name: "LAW 24", route: "law24-prototype.firebaseapp" },
+  {
+    name: "New Portfolio",
+    route: "renewalsungpofo.firebaseapp",
+    webm: pofoWebm,
+    mp4: pofoMp4,
+  },
+  {
+    name: "Tommy Future esthetic",
+    route: "amazing-prototype.firebaseapp",
+    webm: tommyWebm,
+    mp4: tommyMp4,
+  },
+  {
+    name: "Lotteria Font",
+    route: "lotteriafont",
+    webm: lotteriaWebm,
+    mp4: lotteriaMp4,
+  },
+  {
+    name: "LAW 24",
+    route: "law24-prototype.firebaseapp",
+    webm: lawWebm,
+    mp4: lawMp4,
+  },
 ];
 
 const moveToPage = (route) => {
@@ -41,6 +74,8 @@ const moveToPage = (route) => {
 
 const canvasRef = ref();
 const openBox = ref(0);
+const videoArray = ref([]);
+const videoRef = (el) => videoArray.value.push(el);
 let loadedModel = 0;
 
 let renderer;
@@ -500,6 +535,7 @@ const animate = () => {
             action.clampWhenFinished = true;
             action.play();
             openBox.value = 1;
+            videoArray.value[0].play();
             box1AnimationPlayed = true;
           } else if (box1distance > 5 && box1AnimationPlayed) {
             mixer = new THREE.AnimationMixer(chest1.scene);
@@ -508,6 +544,7 @@ const animate = () => {
             action.clampWhenFinished = true;
             action.play();
             openBox.value = 0;
+            videoArray.value[0].pause();
             box1AnimationPlayed = false;
           }
 
@@ -518,6 +555,7 @@ const animate = () => {
             action.clampWhenFinished = true;
             action.play();
             openBox.value = 2;
+            videoArray.value[1].play();
             box2AnimationPlayed = true;
           } else if (box2distance > 5 && box2AnimationPlayed) {
             mixer = new THREE.AnimationMixer(chest2.scene);
@@ -526,6 +564,7 @@ const animate = () => {
             action.clampWhenFinished = true;
             action.play();
             openBox.value = 0;
+            videoArray.value[1].pause();
             box2AnimationPlayed = false;
           }
 
@@ -536,6 +575,7 @@ const animate = () => {
             action.clampWhenFinished = true;
             action.play();
             openBox.value = 3;
+            videoArray.value[2].play();
             box3AnimationPlayed = true;
           } else if (box3distance > 5 && box3AnimationPlayed) {
             mixer = new THREE.AnimationMixer(chest3.scene);
@@ -544,6 +584,7 @@ const animate = () => {
             action.clampWhenFinished = true;
             action.play();
             openBox.value = 0;
+            videoArray.value[2].pause();
             box3AnimationPlayed = false;
           }
 
@@ -554,6 +595,7 @@ const animate = () => {
             action.clampWhenFinished = true;
             action.play();
             openBox.value = 4;
+            videoArray.value[3].play();
             box4AnimationPlayed = true;
           } else if (box4distance > 5 && box4AnimationPlayed) {
             mixer = new THREE.AnimationMixer(chest4.scene);
@@ -562,6 +604,7 @@ const animate = () => {
             action.clampWhenFinished = true;
             action.play();
             openBox.value = 0;
+            videoArray.value[3].pause();
             box4AnimationPlayed = false;
           }
         },
