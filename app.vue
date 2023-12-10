@@ -29,14 +29,14 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 const contents = [
-  { name: "New Portfolio", route: "renewalsungpofo.firebaseapp.com" },
-  { name: "Tommy Future esthetic", route: "amazing-prototype.firebaseapp.com" },
-  { name: "Lotteria Font", route: "lotteriafont.com" },
-  { name: "Sung's gallery", route: "sung-gallery.firebaseapp.com" },
+  { name: "New Portfolio", route: "renewalsungpofo.firebaseapp" },
+  { name: "Tommy Future esthetic", route: "amazing-prototype.firebaseapp" },
+  { name: "Lotteria Font", route: "lotteriafont" },
+  { name: "LAW 24", route: "law24-prototype.firebaseapp" },
 ];
 
 const moveToPage = (route) => {
-  open(`https://${route}`);
+  open(`https://${route}.com`);
 };
 
 const canvasRef = ref();
@@ -311,8 +311,8 @@ const loadFrame = () => {
 
     loadedModel++;
   });
-  // gallery
-  gltfLoader.load("/projects/frame-gallery1.glb", (gltf) => {
+  // law24
+  gltfLoader.load("/projects/frame-law1.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 1.1;
     gltf.scene.position.set(-210, 0, -20);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
@@ -325,7 +325,7 @@ const loadFrame = () => {
 
     loadedModel++;
   });
-  gltfLoader.load("/projects/frame-gallery2.glb", (gltf) => {
+  gltfLoader.load("/projects/frame-law2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
     gltf.scene.position.set(-223, 0, -17.5);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
@@ -338,7 +338,7 @@ const loadFrame = () => {
 
     loadedModel++;
   });
-  gltfLoader.load("/projects/frame-gallery3.glb", (gltf) => {
+  gltfLoader.load("/projects/frame-law3.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.9;
     gltf.scene.position.set(-236, 0, -20);
     gltf.scene.scale.set(1.1, 1.1, 1.1);
