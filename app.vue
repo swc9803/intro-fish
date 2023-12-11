@@ -86,17 +86,16 @@ const videoArray = ref([]);
 const videoRef = (el) => videoArray.value.push(el);
 let loadedModel = 0;
 
-let renderer;
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 let camera;
-let raf;
 let mixer;
 let mixerJellyfish, mixerTurtle;
 let fish;
 let chest1, chest2, chest3, chest4;
 
-const fishSpeed = 28;
-const cameraY = 17; // 카메라 높이
-const cameraZ = 14; // 카메라 거리
+const fishSpeed = 10;
+let cameraY = 17; // 카메라 높이
+let cameraZ = 14; // 카메라 거리
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0c6ceb);
@@ -167,10 +166,7 @@ arcTL3.to(params3, {
 
 // 바닥
 const floorGeometry = new THREE.PlaneGeometry(350, 70);
-const floorMaterial = new THREE.MeshPhongMaterial({
-  color: 0x00bfff,
-  side: THREE.DoubleSide,
-});
+const floorMaterial = new THREE.MeshPhongMaterial({ color: 0x00bfff });
 const floor = new THREE.Mesh(floorGeometry, floorMaterial);
 floor.receiveShadow = true;
 floor.rotation.set(-Math.PI / 2, 0, 0);
@@ -508,7 +504,7 @@ const loadDecoration = () => {
 
     gltf.scene.rotation.x = -Math.PI * 1.5;
     gltf.scene.rotation.z = Math.PI * 1.5;
-    gltf.scene.position.set(0, 15, -30);
+    gltf.scene.position.set(-20, 13, -50);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -535,7 +531,7 @@ const loadDecoration = () => {
 
     gltf.scene.scale.set(3, 3, 3);
     gltf.scene.rotation.y = Math.PI * 0.5;
-    gltf.scene.position.set(0, 10, -20);
+    gltf.scene.position.set(-100, 12, -50);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -545,15 +541,15 @@ const loadDecoration = () => {
 
     const tl = gsap.timeline({ repeat: -1 });
     tl.to(gltf.scene.position, {
-      x: 10,
-      duration: 5,
+      x: -85,
+      duration: 15,
       ease: "power1.out",
     });
     tl.to(
       gltf.scene.position,
       {
-        x: 0,
-        duration: 5,
+        x: -100,
+        duration: 15,
         ease: "power1.out",
       },
       ">",
@@ -562,7 +558,7 @@ const loadDecoration = () => {
       gltf.scene.rotation,
       {
         y: Math.PI * 1.5,
-        duration: 2,
+        duration: 1.5,
       },
       "<",
     );
@@ -570,8 +566,8 @@ const loadDecoration = () => {
       gltf.scene.rotation,
       {
         y: Math.PI * 0.5,
-        duration: 2,
-        delay: 5,
+        duration: 1.5,
+        delay: 15,
       },
       "<",
     );
@@ -814,6 +810,16 @@ const onResize = () => {
   const vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty("--vh", `${vh}px`);
 
+  if (matchMedia("screen and (max-width: 480px)").matches) {
+    cameraY = 22;
+    cameraZ = 18;
+    offset = new THREE.Vector3(0, cameraY, -cameraZ);
+  } else {
+    cameraY = 17;
+    cameraZ = 14;
+    offset = new THREE.Vector3(0, cameraY, -cameraZ);
+  }
+
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(canvasRef.value.offsetWidth, canvasRef.value.offsetHeight);
   canvasRef.value.appendChild(renderer.domElement);
@@ -831,50 +837,50 @@ const mouse = new THREE.Vector2();
 
 const isClicked = ref(false);
 const onMouseDown = (e) => {
-  if (loadedModel >= 21) {
+  if (loadedModel >= 44) {
     isClicked.value = true;
     mouse.x = (e.clientX / canvasRef.value.offsetWidth) * 2 - 1;
     mouse.y = -(e.clientY / canvasRef.value.offsetHeight) * 2 + 1;
   }
 };
 const onMouseMove = (e) => {
-  if (loadedModel >= 21) {
+  if (loadedModel >= 44) {
     mouse.x = (e.clientX / canvasRef.value.offsetWidth) * 2 - 1;
     mouse.y = -(e.clientY / canvasRef.value.offsetHeight) * 2 + 1;
   }
 };
 const onMouseUp = () => {
-  if (loadedModel >= 21) {
+  if (loadedModel >= 44) {
     isClicked.value = false;
   }
 };
 const onTouchStart = (e) => {
-  if (loadedModel >= 21) {
+  if (loadedModel >= 44) {
     isClicked.value = true;
     mouse.x = (e.touches[0].clientX / canvasRef.value.offsetWidth) * 2 - 1;
     mouse.y = -(e.touches[0].clientY / canvasRef.value.offsetHeight) * 2 + 1;
   }
 };
 const onTouchMove = (e) => {
-  if (loadedModel >= 21) {
+  if (loadedModel >= 44) {
     mouse.x = (e.touches[0].clientX / canvasRef.value.offsetWidth) * 2 - 1;
     mouse.y = -(e.touches[0].clientY / canvasRef.value.offsetHeight) * 2 + 1;
   }
 };
 const onTouchEnd = () => {
-  if (loadedModel >= 21) {
+  if (loadedModel >= 44) {
     isClicked.value = false;
   }
 };
 
-const offset = new THREE.Vector3(0, cameraY, -cameraZ);
+let offset = new THREE.Vector3(0, cameraY, -cameraZ);
 const clock = new THREE.Clock();
 const animate = () => {
   const deltaTime = clock.getDelta();
 
   camera.updateMatrixWorld();
   renderer.render(scene, camera);
-  raf = requestAnimationFrame(animate);
+  requestAnimationFrame(animate);
 
   if (mixer) mixer.update(deltaTime);
   if (mixerJellyfish) mixerJellyfish.update(deltaTime);
@@ -882,7 +888,6 @@ const animate = () => {
 
   if (fish) {
     const targetPosition = fish.position.clone().add(offset);
-    // targetPosition.x -= 2;
     camera.position.copy(targetPosition);
     camera.lookAt(fish.position);
   }
@@ -1022,7 +1027,12 @@ const animate = () => {
 };
 
 onMounted(async () => {
-  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  if (matchMedia("screen and (max-width: 480px)").matches) {
+    cameraY = 22;
+    cameraZ = 18;
+    offset = new THREE.Vector3(0, cameraY, -cameraZ);
+  }
+
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -1050,13 +1060,6 @@ onMounted(async () => {
   animate();
 
   window.addEventListener("resize", onResize);
-});
-
-onBeforeUnmount(() => {
-  cancelAnimationFrame(raf);
-  renderer.dispose();
-
-  window.removeEventListener("resize", onResize);
 });
 </script>
 
