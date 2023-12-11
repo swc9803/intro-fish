@@ -133,7 +133,7 @@ arcTL1.to(params1, {
     torus1.geometry = new THREE.TorusGeometry(3, 0.1, 2, 40, params1.arc);
   },
   onComplete: () => {
-    console.log("complete");
+    open("https://github.com/swc9803");
   },
 });
 const arcTL2 = gsap.timeline({ paused: true });
@@ -145,6 +145,9 @@ arcTL2.to(params2, {
     torus2.geometry.dispose();
     torus2.geometry = new THREE.TorusGeometry(3, 0.1, 2, 40, params2.arc);
   },
+  onComplete: () => {
+    open("https://codepen.io/swc9803/pens/public");
+  },
 });
 const arcTL3 = gsap.timeline({ paused: true });
 arcTL3.to(params3, {
@@ -154,6 +157,9 @@ arcTL3.to(params3, {
   onUpdate: () => {
     torus3.geometry.dispose();
     torus3.geometry = new THREE.TorusGeometry(3, 0.1, 2, 40, params3.arc);
+  },
+  onComplete: () => {
+    open("mailto:swc9803@gmail.com");
   },
 });
 
