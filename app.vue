@@ -116,16 +116,18 @@ torus1.rotation.x = Math.PI * 0.5;
 torus1.rotation.z = Math.PI * 0.5;
 torus1.position.set(12, 0.5, -55.5);
 scene.add(torus1);
-torus2.rotation.x = -Math.PI * 0.5;
+torus2.rotation.x = Math.PI * 0.5;
+torus2.rotation.z = Math.PI * 0.5;
 torus2.position.set(4, 0.5, -55.5);
 scene.add(torus2);
-torus3.rotation.x = -Math.PI * 0.5;
+torus3.rotation.x = Math.PI * 0.5;
+torus3.rotation.z = Math.PI * 0.5;
 torus3.position.set(-4, 0.5, -55.5);
 scene.add(torus3);
 
 const arcTL1 = gsap.timeline({ paused: true });
 arcTL1.to(params1, {
-  duration: 4,
+  duration: 3,
   arc: Math.PI * 2,
   ease: "none",
   onUpdate: () => {
@@ -138,7 +140,7 @@ arcTL1.to(params1, {
 });
 const arcTL2 = gsap.timeline({ paused: true });
 arcTL2.to(params2, {
-  duration: 4,
+  duration: 3,
   arc: Math.PI * 2,
   ease: "none",
   onUpdate: () => {
@@ -151,7 +153,7 @@ arcTL2.to(params2, {
 });
 const arcTL3 = gsap.timeline({ paused: true });
 arcTL3.to(params3, {
-  duration: 4,
+  duration: 3,
   arc: Math.PI * 2,
   ease: "none",
   onUpdate: () => {
@@ -533,7 +535,7 @@ const loadDecoration = () => {
 
     gltf.scene.scale.set(3, 3, 3);
     gltf.scene.rotation.y = Math.PI * 0.5;
-    gltf.scene.position.set(5, 10, -20);
+    gltf.scene.position.set(0, 10, -20);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -541,13 +543,38 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    gsap.to(gltf.scene.position, {
+    const tl = gsap.timeline({ repeat: -1 });
+    tl.to(gltf.scene.position, {
       x: 10,
-      yoyo: true,
-      repeat: -1,
-      duration: 12,
+      duration: 5,
       ease: "power1.out",
     });
+    tl.to(
+      gltf.scene.position,
+      {
+        x: 0,
+        duration: 5,
+        ease: "power1.out",
+      },
+      ">",
+    );
+    tl.to(
+      gltf.scene.rotation,
+      {
+        y: Math.PI * 1.5,
+        duration: 2,
+      },
+      "<",
+    );
+    tl.to(
+      gltf.scene.rotation,
+      {
+        y: Math.PI * 0.5,
+        duration: 2,
+        delay: 5,
+      },
+      "<",
+    );
 
     loadedModel++;
   });
@@ -557,12 +584,16 @@ const loadDecoration = () => {
     gltf.scene.rotation.x = -Math.PI * 0.5;
     gltf.scene.rotation.z = -Math.PI * 0.1;
     gltf.scene.scale.set(0.03, 0.03, 0.03);
-    gltf.scene.position.set(0, 0.3, 0);
-    gltf.scene.traverse((node) => {
-      if (node.isMesh) {
-        node.receiveShadow = true;
-      }
-    });
+    gltf.scene.position.set(15, 0.3, -45);
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/decoration/clam1.glb", (gltf) => {
+    gltf.scene.rotation.x = -Math.PI * 0.5;
+    gltf.scene.rotation.z = -Math.PI * 1.4;
+    gltf.scene.scale.set(0.03, 0.03, 0.03);
+    gltf.scene.position.set(-25, 0.3, -35);
     scene.add(gltf.scene);
 
     loadedModel++;
@@ -571,7 +602,20 @@ const loadDecoration = () => {
   // 산호
   gltfLoader.load("/decoration/coral1.glb", (gltf) => {
     gltf.scene.scale.set(0.5, 0.5, 0.5);
-    gltf.scene.position.set(-5, 0.3, -5);
+    gltf.scene.position.set(30, 0.3, -57);
+
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/decoration/coral1.glb", (gltf) => {
+    gltf.scene.scale.set(0.35, 0.35, 0.35);
+    gltf.scene.position.set(-51, 0.3, -50);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -584,7 +628,20 @@ const loadDecoration = () => {
   gltfLoader.load("/decoration/coral2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 2;
     gltf.scene.scale.set(2, 2, 2);
-    gltf.scene.position.set(5, 0.3, -5);
+    gltf.scene.position.set(-155, 0.3, -45);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/decoration/coral2.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI * 1.4;
+    gltf.scene.scale.set(1.7, 1.7, 1.7);
+    gltf.scene.position.set(-75, 0.3, -55);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -599,7 +656,33 @@ const loadDecoration = () => {
   gltfLoader.load("/decoration/seastar.glb", (gltf) => {
     gltf.scene.rotation.x = -Math.PI * 0.5;
     gltf.scene.scale.set(35, 35, 35);
-    gltf.scene.position.set(5, 0.3, -10);
+    gltf.scene.position.set(-185, 0.3, -40);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.receiveShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/decoration/seastar.glb", (gltf) => {
+    gltf.scene.rotation.x = -Math.PI * 0.5;
+    gltf.scene.scale.set(35, 35, 35);
+    gltf.scene.position.set(-25, 0.3, -20);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.receiveShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/decoration/seastar.glb", (gltf) => {
+    gltf.scene.rotation.x = -Math.PI * 0.5;
+    gltf.scene.scale.set(35, 35, 35);
+    gltf.scene.position.set(-175, 0.3, -10);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.receiveShadow = true;
@@ -612,8 +695,21 @@ const loadDecoration = () => {
 
   // 해초
   gltfLoader.load("/decoration/seaweed1.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI * 0.3;
     gltf.scene.scale.set(15, 15, 15);
-    gltf.scene.position.set(-5, 0.3, -10);
+    gltf.scene.position.set(-70, 0.3, -15);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/decoration/seaweed1.glb", (gltf) => {
+    gltf.scene.scale.set(15, 15, 15);
+    gltf.scene.position.set(-255, 0.3, -50);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -624,8 +720,20 @@ const loadDecoration = () => {
     loadedModel++;
   });
   gltfLoader.load("/decoration/seaweed2.glb", (gltf) => {
-    gltf.scene.scale.set(10, 10, 10);
-    gltf.scene.position.set(-5, 5, -15);
+    gltf.scene.scale.set(8, 8, 8);
+    gltf.scene.position.set(-25, 5, -5);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/decoration/seaweed2.glb", (gltf) => {
+    gltf.scene.scale.set(6, 6, 6);
+    gltf.scene.position.set(-175, 4, -55);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -640,7 +748,33 @@ const loadDecoration = () => {
   gltfLoader.load("/decoration/shell1.glb", (gltf) => {
     gltf.scene.rotation.z = -Math.PI * 0.7;
     gltf.scene.scale.set(50, 50, 50);
-    gltf.scene.position.set(5, 1.3, -15);
+    gltf.scene.position.set(50, 1.3, -50);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/decoration/shell1.glb", (gltf) => {
+    gltf.scene.rotation.z = Math.PI * 0.7;
+    gltf.scene.scale.set(50, 50, 50);
+    gltf.scene.position.set(-120, 1.3, -37);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/decoration/shell1.glb", (gltf) => {
+    gltf.scene.rotation.z = Math.PI * 1.4;
+    gltf.scene.scale.set(50, 50, 50);
+    gltf.scene.position.set(-220, 1.3, -57);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -653,6 +787,18 @@ const loadDecoration = () => {
   gltfLoader.load("/decoration/shell2.glb", (gltf) => {
     gltf.scene.scale.set(0.5, 0.5, 0.5);
     gltf.scene.position.set(5, 0, -20);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/decoration/shell2.glb", (gltf) => {
+    gltf.scene.scale.set(0.5, 0.5, 0.5);
+    gltf.scene.position.set(-140, 0, -10);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -847,19 +993,19 @@ const animate = () => {
           const info1distance = fish.position.distanceTo(torus1.position);
           const info2distance = fish.position.distanceTo(torus2.position);
           const info3distance = fish.position.distanceTo(torus3.position);
-          if (info1distance <= 3) {
+          if (info1distance <= 5) {
             arcTL1.play();
-          } else if (info1distance > 3) {
+          } else if (info1distance > 5) {
             arcTL1.reverse();
           }
-          if (info2distance <= 3) {
+          if (info2distance <= 5) {
             arcTL2.play();
-          } else if (info2distance > 3) {
+          } else if (info2distance > 5) {
             arcTL2.reverse();
           }
-          if (info3distance <= 3) {
+          if (info3distance <= 5) {
             arcTL3.play();
-          } else if (info3distance > 3) {
+          } else if (info3distance > 5) {
             arcTL3.reverse();
           }
         },
