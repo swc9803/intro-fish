@@ -90,6 +90,7 @@ let renderer;
 let camera;
 let raf;
 let mixer;
+let mixerJellyfish, mixerTurtle;
 let fish;
 let chest1, chest2, chest3, chest4;
 
@@ -102,6 +103,59 @@ scene.background = new THREE.Color(0x0c6ceb);
 
 // 안개
 scene.fog = new THREE.FogExp2(0x00bfff, 0.02);
+
+const params1 = { arc: 0 };
+const params2 = { arc: 0 };
+const params3 = { arc: 0 };
+const torusGeometry = new THREE.TorusGeometry(3, 0.1, 2, 40, params1.arc);
+const torusMaterial = new THREE.MeshBasicMaterial({ color: 0x13003f });
+const torus1 = new THREE.Mesh(torusGeometry, torusMaterial);
+const torus2 = new THREE.Mesh(torusGeometry, torusMaterial);
+const torus3 = new THREE.Mesh(torusGeometry, torusMaterial);
+torus1.rotation.x = Math.PI * 0.5;
+torus1.rotation.z = Math.PI * 0.5;
+torus1.position.set(12, 0.5, -55.5);
+scene.add(torus1);
+torus2.rotation.x = -Math.PI * 0.5;
+torus2.position.set(4, 0.5, -55.5);
+scene.add(torus2);
+torus3.rotation.x = -Math.PI * 0.5;
+torus3.position.set(-4, 0.5, -55.5);
+scene.add(torus3);
+
+const arcTL1 = gsap.timeline({ paused: true });
+arcTL1.to(params1, {
+  duration: 4,
+  arc: Math.PI * 2,
+  ease: "none",
+  onUpdate: () => {
+    torus1.geometry.dispose();
+    torus1.geometry = new THREE.TorusGeometry(3, 0.1, 2, 40, params1.arc);
+  },
+  onComplete: () => {
+    console.log("complete");
+  },
+});
+const arcTL2 = gsap.timeline({ paused: true });
+arcTL2.to(params2, {
+  duration: 4,
+  arc: Math.PI * 2,
+  ease: "none",
+  onUpdate: () => {
+    torus2.geometry.dispose();
+    torus2.geometry = new THREE.TorusGeometry(3, 0.1, 2, 40, params2.arc);
+  },
+});
+const arcTL3 = gsap.timeline({ paused: true });
+arcTL3.to(params3, {
+  duration: 4,
+  arc: Math.PI * 2,
+  ease: "none",
+  onUpdate: () => {
+    torus3.geometry.dispose();
+    torus3.geometry = new THREE.TorusGeometry(3, 0.1, 2, 40, params3.arc);
+  },
+});
 
 // 바닥
 const floorGeometry = new THREE.PlaneGeometry(350, 70);
@@ -398,24 +452,24 @@ const loadFrame = () => {
 const loadLogo = () => {
   gltfLoader.load("/github.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
-    gltf.scene.position.set(10, 0.5, -55);
-    gltf.scene.scale.set(1.5, 1.5, 1.5);
+    gltf.scene.position.set(12, 0.5, -55);
+    gltf.scene.scale.set(3, 3, 3);
     scene.add(gltf.scene);
 
     loadedModel++;
   });
-  gltfLoader.load("/github.glb", (gltf) => {
+  gltfLoader.load("/codepen.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
     gltf.scene.position.set(4, 0.5, -55);
-    gltf.scene.scale.set(1.5, 1.5, 1.5);
+    gltf.scene.scale.set(3, 3, 3);
     scene.add(gltf.scene);
 
     loadedModel++;
   });
-  gltfLoader.load("/github.glb", (gltf) => {
+  gltfLoader.load("/email.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
-    gltf.scene.position.set(-2, 0.5, -55);
-    gltf.scene.scale.set(1.5, 1.5, 1.5);
+    gltf.scene.position.set(-4, 0.5, -55);
+    gltf.scene.scale.set(3, 3, 3);
     scene.add(gltf.scene);
 
     loadedModel++;
@@ -423,10 +477,176 @@ const loadLogo = () => {
 };
 
 const loadDecoration = () => {
+  // 공사 중
   gltfLoader.load("/construction.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 1.05;
     gltf.scene.position.set(60, 0, -23);
     gltf.scene.scale.set(7, 7, 7);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+
+  // 해파리
+  gltfLoader.load("/decoration/jellyfish.glb", (gltf) => {
+    mixerJellyfish = new THREE.AnimationMixer(gltf.scene);
+    const action = mixerJellyfish.clipAction(gltf.animations[0]);
+    action.play();
+
+    gltf.scene.rotation.x = -Math.PI * 1.5;
+    gltf.scene.rotation.z = Math.PI * 1.5;
+    gltf.scene.position.set(0, 15, -30);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    gsap.to(gltf.scene.position, {
+      x: 10,
+      yoyo: true,
+      repeat: -1,
+      duration: 12,
+      ease: "power1.out",
+    });
+
+    loadedModel++;
+  });
+
+  // 거북
+  gltfLoader.load("/decoration/turtle.glb", (gltf) => {
+    mixerTurtle = new THREE.AnimationMixer(gltf.scene);
+    const action = mixerTurtle.clipAction(gltf.animations[0]);
+    action.play();
+
+    gltf.scene.scale.set(3, 3, 3);
+    gltf.scene.rotation.y = Math.PI * 0.5;
+    gltf.scene.position.set(5, 10, -20);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    gsap.to(gltf.scene.position, {
+      x: 10,
+      yoyo: true,
+      repeat: -1,
+      duration: 12,
+      ease: "power1.out",
+    });
+
+    loadedModel++;
+  });
+
+  // 조개1
+  gltfLoader.load("/decoration/clam1.glb", (gltf) => {
+    gltf.scene.rotation.x = -Math.PI * 0.5;
+    gltf.scene.rotation.z = -Math.PI * 0.1;
+    gltf.scene.scale.set(0.03, 0.03, 0.03);
+    gltf.scene.position.set(0, 0.3, 0);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.receiveShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+
+  // 산호
+  gltfLoader.load("/decoration/coral1.glb", (gltf) => {
+    gltf.scene.scale.set(0.5, 0.5, 0.5);
+    gltf.scene.position.set(-5, 0.3, -5);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/decoration/coral2.glb", (gltf) => {
+    gltf.scene.rotation.y = Math.PI * 2;
+    gltf.scene.scale.set(2, 2, 2);
+    gltf.scene.position.set(5, 0.3, -5);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+
+  // 불가사리
+  gltfLoader.load("/decoration/seastar.glb", (gltf) => {
+    gltf.scene.rotation.x = -Math.PI * 0.5;
+    gltf.scene.scale.set(35, 35, 35);
+    gltf.scene.position.set(5, 0.3, -10);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.receiveShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+
+  // 해초
+  gltfLoader.load("/decoration/seaweed1.glb", (gltf) => {
+    gltf.scene.scale.set(15, 15, 15);
+    gltf.scene.position.set(-5, 0.3, -10);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/decoration/seaweed2.glb", (gltf) => {
+    gltf.scene.scale.set(10, 10, 10);
+    gltf.scene.position.set(-5, 5, -15);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+
+  // 소라 껍데기
+  gltfLoader.load("/decoration/shell1.glb", (gltf) => {
+    gltf.scene.rotation.z = -Math.PI * 0.7;
+    gltf.scene.scale.set(50, 50, 50);
+    gltf.scene.position.set(5, 1.3, -15);
+    gltf.scene.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(gltf.scene);
+
+    loadedModel++;
+  });
+  gltfLoader.load("/decoration/shell2.glb", (gltf) => {
+    gltf.scene.scale.set(0.5, 0.5, 0.5);
+    gltf.scene.position.set(5, 0, -20);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -505,6 +725,8 @@ const animate = () => {
   raf = requestAnimationFrame(animate);
 
   if (mixer) mixer.update(deltaTime);
+  if (mixerJellyfish) mixerJellyfish.update(deltaTime);
+  if (mixerTurtle) mixerTurtle.update(deltaTime);
 
   if (fish) {
     const targetPosition = fish.position.clone().add(offset);
@@ -614,6 +836,25 @@ const animate = () => {
             openBox.value = 0;
             videoArray.value[3].pause();
             box4AnimationPlayed = false;
+          }
+
+          const info1distance = fish.position.distanceTo(torus1.position);
+          const info2distance = fish.position.distanceTo(torus2.position);
+          const info3distance = fish.position.distanceTo(torus3.position);
+          if (info1distance <= 3) {
+            arcTL1.play();
+          } else if (info1distance > 3) {
+            arcTL1.reverse();
+          }
+          if (info2distance <= 3) {
+            arcTL2.play();
+          } else if (info2distance > 3) {
+            arcTL2.reverse();
+          }
+          if (info3distance <= 3) {
+            arcTL3.play();
+          } else if (info3distance > 3) {
+            arcTL3.reverse();
           }
         },
       });
