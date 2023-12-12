@@ -40,13 +40,17 @@
   svg {
     width: 10%;
     height: auto;
+    @media (max-width: 480px) {
+      width: 30%;
+    }
   }
   p {
     color: #ffffff;
     font-size: 1.5em;
     font-weight: 700;
-    @media (max-width: 768px) {
-      font-size: 1em;
+    pointer-events: none;
+    @media (max-width: 480px) {
+      font-size: 1.25em;
     }
   }
 }

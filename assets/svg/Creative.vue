@@ -21,3 +21,11 @@ defineExpose({
   intro1,
 });
 </script>
+
+<style lang="scss" scoped>
+svg {
+  @media (max-width: 480px) {
+    width: 70%;
+  }
+}
+</style>

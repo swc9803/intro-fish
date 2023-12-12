@@ -282,13 +282,6 @@ const loadFish = () => {
     scene.add(fish);
 
     loadedModel.value++;
-
-    // mixer = new THREE.AnimationMixer(gltf.scene);
-    // const action = mixer.clipAction(gltf.animations[0]);
-    // console.log(mixer.clipAction(gltf.animations));
-    // action.setLoop(THREE.LoopOnce);
-    // action.clampWhenFinished = true;
-    // action.play();
   });
 };
 // sign
@@ -962,7 +955,9 @@ const animate = () => {
             action.clampWhenFinished = true;
             action.play();
             openBox.value = 1;
-            videoArray.value[0].play();
+            setTimeout(() => {
+              videoArray.value[0].play();
+            }, 100);
             box1AnimationPlayed = true;
           } else if (box1distance > 5 && box1AnimationPlayed) {
             mixer = new THREE.AnimationMixer(chest1.scene);
@@ -982,7 +977,9 @@ const animate = () => {
             action.clampWhenFinished = true;
             action.play();
             openBox.value = 2;
-            videoArray.value[1].play();
+            setTimeout(() => {
+              videoArray.value[1].play();
+            }, 100);
             box2AnimationPlayed = true;
           } else if (box2distance > 5 && box2AnimationPlayed) {
             mixer = new THREE.AnimationMixer(chest2.scene);
@@ -1002,7 +999,9 @@ const animate = () => {
             action.clampWhenFinished = true;
             action.play();
             openBox.value = 3;
-            videoArray.value[2].play();
+            setTimeout(() => {
+              videoArray.value[2].play();
+            }, 100);
             box3AnimationPlayed = true;
           } else if (box3distance > 5 && box3AnimationPlayed) {
             mixer = new THREE.AnimationMixer(chest3.scene);
@@ -1022,7 +1021,9 @@ const animate = () => {
             action.clampWhenFinished = true;
             action.play();
             openBox.value = 4;
-            videoArray.value[3].play();
+            setTimeout(() => {
+              videoArray.value[3].play();
+            }, 100);
             box4AnimationPlayed = true;
           } else if (box4distance > 5 && box4AnimationPlayed) {
             mixer = new THREE.AnimationMixer(chest4.scene);
@@ -1219,6 +1220,7 @@ watch(loadedModel, (newVal) => {
       width: 70%;
       color: #acacac;
       word-break: keep-all;
+      line-height: 1.6;
       a {
         color: #00a0fa;
         text-decoration: underline;
