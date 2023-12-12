@@ -1,20 +1,25 @@
 <template>
   <div class="container">
-    <div class="loading">
-      <transition name="loading-fade">
-        <div v-show="!isAllModelLoaded">
-          <Loading ref="loadingRef" />
-          <p>
-            If the page does not load after some time, please click
-            <nuxt-link to="https://renewalsungpofo.firebaseapp.com/">
-              here
-            </nuxt-link>
-          </p>
+    <transition name="intro-fade">
+      <div v-show="!endIntroAnimation" class="loading">
+        <div class="intro-text">
+          <Creative ref="introRef1" />
+          <Interactive ref="introRef2" />
+          <Developer ref="introRef3" />
         </div>
-      </transition>
-
-      <!-- interactive creative developer blur -->
-    </div>
+        <transition name="loading-fade">
+          <div v-show="!isAllModelLoaded">
+            <Loading ref="loadingRef" />
+            <p>
+              If the page does not load after some time, please click
+              <nuxt-link to="https://renewalsungpofo.firebaseapp.com/">
+                here
+              </nuxt-link>
+            </p>
+          </div>
+        </transition>
+      </div>
+    </transition>
     <div
       ref="canvasRef"
       class="wrapper"
@@ -49,6 +54,9 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 import Loading from "@/components/Loading.vue";
+import Creative from "@/assets/svg/Creative.vue";
+import Interactive from "@/assets/svg/Interactive.vue";
+import Developer from "@/assets/svg/Developer.vue";
 
 import pofoMp4 from "@/assets/video/pofo-thumbnail.mp4";
 import pofoWebm from "@/assets/video/pofo-thumbnail.webm";
@@ -61,6 +69,12 @@ import lawWebm from "@/assets/video/law-thumbnail.webm";
 
 const isAllModelLoaded = ref(false);
 const loadingRef = ref();
+const introRef1 = ref();
+const introRef2 = ref();
+const introRef3 = ref();
+
+const introTL = gsap.timeline({ paused: true });
+const endIntroAnimation = ref(false);
 
 const contents = [
   {
@@ -1046,6 +1060,7 @@ const animate = () => {
 };
 
 onMounted(async () => {
+  // 로딩
   const loadingArray = [
     loadingRef.value.path1,
     loadingRef.value.path2,
@@ -1076,6 +1091,52 @@ onMounted(async () => {
     },
     "<",
   );
+
+  // 인트로
+  introTL.from(introRef1.value.intro1, {
+    filter: "blur(1em)",
+    opacity: 0,
+    duration: 1,
+    delay: 1.5,
+  });
+  introTL.to(introRef1.value.intro1, {
+    filter: "blur(1em)",
+    opacity: 0,
+    duration: 1,
+  });
+  introTL.from(
+    introRef2.value.intro2,
+    {
+      filter: "blur(1em)",
+      opacity: 0,
+      duration: 1,
+      delay: 0.5,
+    },
+    "<",
+  );
+  introTL.to(introRef2.value.intro2, {
+    filter: "blur(1em)",
+    opacity: 0,
+    duration: 1,
+  });
+  introTL.from(
+    introRef3.value.intro3,
+    {
+      filter: "blur(1em)",
+      opacity: 0,
+      duration: 1,
+      delay: 0.5,
+    },
+    "<",
+  );
+  introTL.to(introRef3.value.intro3, {
+    filter: "blur(1em)",
+    opacity: 0,
+    duration: 1,
+    onComplete: () => {
+      endIntroAnimation.value = true;
+    },
+  });
 
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -1109,6 +1170,7 @@ onMounted(async () => {
 watch(loadedModel, (newVal) => {
   if (newVal === 44) {
     isAllModelLoaded.value = true;
+    introTL.play();
   }
 });
 </script>
@@ -1139,6 +1201,17 @@ watch(loadedModel, (newVal) => {
         color: #00a0fa;
         text-decoration: underline;
         cursor: pointer;
+      }
+    }
+    .intro-text {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      svg {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0);
       }
     }
   }
@@ -1233,6 +1306,16 @@ watch(loadedModel, (newVal) => {
       }
     }
   }
+}
+
+.intro-fade-enter-active,
+.intro-fade-leave-active {
+  transition: 0.7s ease-in-out;
+}
+.intro-fade-enter-from,
+.intro-fade-leave-to {
+  opacity: 0;
+  filter: blur(1em);
 }
 
 .fade-enter-active,
