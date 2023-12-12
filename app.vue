@@ -30,6 +30,7 @@
       @touchmove="onTouchMove"
       @touchend="onTouchEnd"
     />
+    <!-- Click on the screen to move -->
     <div v-for="(content, index) in contents" :key="content" class="message">
       <transition name="fade">
         <div v-show="openBox === index + 1" class="content-wrapper">
@@ -1169,8 +1170,20 @@ onMounted(async () => {
 
 watch(loadedModel, (newVal) => {
   if (newVal === 44) {
-    isAllModelLoaded.value = true;
-    introTL.play();
+    gsap.to(fish.position, {
+      x: -200,
+      z: -60,
+      duration: 1,
+      onComplete: () => {
+        gsap.set(fish.position, {
+          x: 0,
+          z: 0,
+        });
+        introTL.play();
+
+        isAllModelLoaded.value = true;
+      },
+    });
   }
 });
 </script>

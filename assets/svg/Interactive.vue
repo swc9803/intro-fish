@@ -21,9 +21,3 @@ defineExpose({
   intro2,
 });
 </script>
-
-<style lang="scss" scoped>
-svg {
-  position: fixed;
-}
-</style>
