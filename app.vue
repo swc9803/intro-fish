@@ -1,9 +1,23 @@
 <template>
   <div class="container">
+    <div class="loading">
+      <transition name="loading-fade">
+        <div v-show="!isAllModelLoaded">
+          <Loading ref="loadingRef" />
+          <p>
+            If the page does not load after some time, please click
+            <nuxt-link to="https://renewalsungpofo.firebaseapp.com/">
+              here
+            </nuxt-link>
+          </p>
+        </div>
+      </transition>
+
+      <!-- interactive creative developer blur -->
+    </div>
     <div
       ref="canvasRef"
       class="wrapper"
-      @click="onClick"
       @mousedown="onMouseDown"
       @mousemove="onMouseMove"
       @mouseup="onMouseUp"
@@ -34,6 +48,8 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
+import Loading from "@/components/Loading.vue";
+
 import pofoMp4 from "@/assets/video/pofo-thumbnail.mp4";
 import pofoWebm from "@/assets/video/pofo-thumbnail.webm";
 import tommyMp4 from "@/assets/video/tommy-thumbnail.mp4";
@@ -42,6 +58,9 @@ import lotteriaMp4 from "@/assets/video/lotteria-thumbnail.mp4";
 import lotteriaWebm from "@/assets/video/lotteria-thumbnail.webm";
 import lawMp4 from "@/assets/video/law-thumbnail.mp4";
 import lawWebm from "@/assets/video/law-thumbnail.webm";
+
+const isAllModelLoaded = ref(false);
+const loadingRef = ref();
 
 const contents = [
   {
@@ -84,7 +103,7 @@ const canvasRef = ref();
 const openBox = ref(0);
 const videoArray = ref([]);
 const videoRef = (el) => videoArray.value.push(el);
-let loadedModel = 0;
+const loadedModel = ref(0);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 let camera;
@@ -221,7 +240,7 @@ const loadChest = (x, z) => {
       });
       scene.add(chest.scene);
 
-      loadedModel++;
+      loadedModel.value++;
 
       resolve(chest);
     });
@@ -241,7 +260,7 @@ const loadFish = () => {
     });
     scene.add(fish);
 
-    loadedModel++;
+    loadedModel.value++;
 
     // mixer = new THREE.AnimationMixer(gltf.scene);
     // const action = mixer.clipAction(gltf.animations[0]);
@@ -263,7 +282,7 @@ const loadSign = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/sign-about.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.4;
@@ -275,7 +294,7 @@ const loadSign = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/sign-playground.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.025;
@@ -287,7 +306,7 @@ const loadSign = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
 };
 // projectImage
@@ -304,7 +323,7 @@ const loadFrame = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/projects/frame-pofo2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
@@ -317,7 +336,7 @@ const loadFrame = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/projects/frame-pofo3.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.9;
@@ -330,7 +349,7 @@ const loadFrame = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   // tommy
   gltfLoader.load("/projects/frame-tommy1.glb", (gltf) => {
@@ -344,7 +363,7 @@ const loadFrame = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/projects/frame-tommy2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
@@ -357,7 +376,7 @@ const loadFrame = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/projects/frame-tommy3.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.9;
@@ -370,7 +389,7 @@ const loadFrame = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   // lotteria
   gltfLoader.load("/projects/frame-lotteria1.glb", (gltf) => {
@@ -384,7 +403,7 @@ const loadFrame = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/projects/frame-lotteria2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
@@ -397,7 +416,7 @@ const loadFrame = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/projects/frame-lotteria3.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.9;
@@ -410,7 +429,7 @@ const loadFrame = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   // law24
   gltfLoader.load("/projects/frame-law1.glb", (gltf) => {
@@ -424,7 +443,7 @@ const loadFrame = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/projects/frame-law2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
@@ -437,7 +456,7 @@ const loadFrame = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/projects/frame-law3.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 0.9;
@@ -450,7 +469,7 @@ const loadFrame = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
 };
 const loadLogo = () => {
@@ -460,7 +479,7 @@ const loadLogo = () => {
     gltf.scene.scale.set(3, 3, 3);
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/codepen.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
@@ -468,7 +487,7 @@ const loadLogo = () => {
     gltf.scene.scale.set(3, 3, 3);
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/email.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI;
@@ -476,7 +495,7 @@ const loadLogo = () => {
     gltf.scene.scale.set(3, 3, 3);
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
 };
 
@@ -493,7 +512,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
 
   // 해파리
@@ -520,7 +539,7 @@ const loadDecoration = () => {
       ease: "power1.out",
     });
 
-    loadedModel++;
+    loadedModel.value++;
   });
 
   // 거북
@@ -572,7 +591,7 @@ const loadDecoration = () => {
       "<",
     );
 
-    loadedModel++;
+    loadedModel.value++;
   });
 
   // 조개1
@@ -583,7 +602,7 @@ const loadDecoration = () => {
     gltf.scene.position.set(15, 0.3, -45);
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/decoration/clam1.glb", (gltf) => {
     gltf.scene.rotation.x = -Math.PI * 0.5;
@@ -592,7 +611,7 @@ const loadDecoration = () => {
     gltf.scene.position.set(-25, 0.3, -35);
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
 
   // 산호
@@ -607,7 +626,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/decoration/coral1.glb", (gltf) => {
     gltf.scene.scale.set(0.35, 0.35, 0.35);
@@ -619,7 +638,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/decoration/coral2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 2;
@@ -632,7 +651,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/decoration/coral2.glb", (gltf) => {
     gltf.scene.rotation.y = Math.PI * 1.4;
@@ -645,7 +664,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
 
   // 불가사리
@@ -660,7 +679,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/decoration/seastar.glb", (gltf) => {
     gltf.scene.rotation.x = -Math.PI * 0.5;
@@ -673,7 +692,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/decoration/seastar.glb", (gltf) => {
     gltf.scene.rotation.x = -Math.PI * 0.5;
@@ -686,7 +705,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
 
   // 해초
@@ -701,7 +720,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/decoration/seaweed1.glb", (gltf) => {
     gltf.scene.scale.set(15, 15, 15);
@@ -713,7 +732,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/decoration/seaweed2.glb", (gltf) => {
     gltf.scene.scale.set(8, 8, 8);
@@ -725,7 +744,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/decoration/seaweed2.glb", (gltf) => {
     gltf.scene.scale.set(6, 6, 6);
@@ -737,7 +756,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
 
   // 소라 껍데기
@@ -752,7 +771,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/decoration/shell1.glb", (gltf) => {
     gltf.scene.rotation.z = Math.PI * 0.7;
@@ -765,7 +784,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/decoration/shell1.glb", (gltf) => {
     gltf.scene.rotation.z = Math.PI * 1.4;
@@ -778,7 +797,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/decoration/shell2.glb", (gltf) => {
     gltf.scene.scale.set(0.5, 0.5, 0.5);
@@ -790,7 +809,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
   gltfLoader.load("/decoration/shell2.glb", (gltf) => {
     gltf.scene.scale.set(0.5, 0.5, 0.5);
@@ -802,7 +821,7 @@ const loadDecoration = () => {
     });
     scene.add(gltf.scene);
 
-    loadedModel++;
+    loadedModel.value++;
   });
 };
 
@@ -837,38 +856,38 @@ const mouse = new THREE.Vector2();
 
 const isClicked = ref(false);
 const onMouseDown = (e) => {
-  if (loadedModel >= 44) {
+  if (isAllModelLoaded.value) {
     isClicked.value = true;
     mouse.x = (e.clientX / canvasRef.value.offsetWidth) * 2 - 1;
     mouse.y = -(e.clientY / canvasRef.value.offsetHeight) * 2 + 1;
   }
 };
 const onMouseMove = (e) => {
-  if (loadedModel >= 44) {
+  if (isAllModelLoaded.value) {
     mouse.x = (e.clientX / canvasRef.value.offsetWidth) * 2 - 1;
     mouse.y = -(e.clientY / canvasRef.value.offsetHeight) * 2 + 1;
   }
 };
 const onMouseUp = () => {
-  if (loadedModel >= 44) {
+  if (isAllModelLoaded.value) {
     isClicked.value = false;
   }
 };
 const onTouchStart = (e) => {
-  if (loadedModel >= 44) {
+  if (isAllModelLoaded.value) {
     isClicked.value = true;
     mouse.x = (e.touches[0].clientX / canvasRef.value.offsetWidth) * 2 - 1;
     mouse.y = -(e.touches[0].clientY / canvasRef.value.offsetHeight) * 2 + 1;
   }
 };
 const onTouchMove = (e) => {
-  if (loadedModel >= 44) {
+  if (isAllModelLoaded.value) {
     mouse.x = (e.touches[0].clientX / canvasRef.value.offsetWidth) * 2 - 1;
     mouse.y = -(e.touches[0].clientY / canvasRef.value.offsetHeight) * 2 + 1;
   }
 };
 const onTouchEnd = () => {
-  if (loadedModel >= 44) {
+  if (isAllModelLoaded.value) {
     isClicked.value = false;
   }
 };
@@ -1027,11 +1046,36 @@ const animate = () => {
 };
 
 onMounted(async () => {
-  if (matchMedia("screen and (max-width: 480px)").matches) {
-    cameraY = 22;
-    cameraZ = 18;
-    offset = new THREE.Vector3(0, cameraY, -cameraZ);
-  }
+  const loadingArray = [
+    loadingRef.value.path1,
+    loadingRef.value.path2,
+    loadingRef.value.path3,
+    loadingRef.value.path4,
+    loadingRef.value.path5,
+    loadingRef.value.path6,
+    loadingRef.value.path7,
+    loadingRef.value.path8,
+    loadingRef.value.path9,
+    loadingRef.value.path10,
+  ];
+  const loadingTL = gsap.timeline({ repeat: -1 });
+  loadingTL.to(loadingArray, {
+    y: -20,
+    stagger: 0.3,
+    ease: "none",
+    duration: 0.5,
+  });
+  loadingTL.to(
+    loadingArray,
+    {
+      y: 0,
+      stagger: 0.3,
+      ease: "none",
+      duration: 0.5,
+      delay: 0.5,
+    },
+    "<",
+  );
 
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -1061,6 +1105,12 @@ onMounted(async () => {
 
   window.addEventListener("resize", onResize);
 });
+
+watch(loadedModel, (newVal) => {
+  if (newVal === 44) {
+    isAllModelLoaded.value = true;
+  }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -1068,6 +1118,30 @@ onMounted(async () => {
   position: fixed;
   width: 100%;
   height: calc(var(--vh) * 100);
+  .loading {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    p {
+      position: relative;
+      left: 50%;
+      transform: translate3d(-50%, 0, 0);
+      margin-top: 20px;
+      width: 70%;
+      color: #acacac;
+      word-break: keep-all;
+      a {
+        color: #00a0fa;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
   .wrapper {
     width: 100%;
     height: 100%;
@@ -1098,7 +1172,7 @@ onMounted(async () => {
       }
       .title {
         margin-bottom: 10px;
-        color: white;
+        color: #ffffff;
         font-size: 2em;
         font-weight: 900;
       }
@@ -1167,7 +1241,15 @@ onMounted(async () => {
 }
 .fade-enter-from,
 .fade-leave-to {
-  // opacity: 0;
   transform: scaleY(0);
+}
+
+.loading-fade-enter-active,
+.loading-fade-leave-active {
+  transition: 0.7s ease-in-out;
+}
+.loading-fade-enter-from,
+.loading-fade-leave-to {
+  opacity: 0;
 }
 </style>
