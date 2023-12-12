@@ -3,6 +3,21 @@ export default defineNuxtConfig({
   css: ["~/assets/css/main.scss"],
   app: {
     head: {
+      script: [
+        {
+          src: "https://www.googletagmanager.com/gtag/js?id=G-7GZKXQ4VM9",
+          async: true,
+        },
+        {
+          innerHTML: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-7GZKXQ4VM9');
+          `,
+          type: "text/javascript",
+        },
+      ],
       title: "Sungwoo Intro",
       meta: [
         {
@@ -92,7 +107,6 @@ export default defineNuxtConfig({
           sizes: "16x16",
           href: "/favicon/favicon-16x16.png",
         },
-        { rel: "manifest", href: "/favicon/manifest.json" },
       ],
     },
   },
