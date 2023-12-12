@@ -30,7 +30,9 @@
       @touchmove="onTouchMove"
       @touchend="onTouchEnd"
     />
-    <!-- Click on the screen to move -->
+    <transition name="intro-fade">
+      <Guide v-show="showGuide" @click="showGuide = false" />
+    </transition>
     <div v-for="(content, index) in contents" :key="content" class="message">
       <transition name="fade">
         <div v-show="openBox === index + 1" class="content-wrapper">
@@ -59,6 +61,8 @@ import Creative from "@/assets/svg/Creative.vue";
 import Interactive from "@/assets/svg/Interactive.vue";
 import Developer from "@/assets/svg/Developer.vue";
 
+import Guide from "@/components/Guide.vue";
+
 import pofoMp4 from "@/assets/video/pofo-thumbnail.mp4";
 import pofoWebm from "@/assets/video/pofo-thumbnail.webm";
 import tommyMp4 from "@/assets/video/tommy-thumbnail.mp4";
@@ -76,6 +80,8 @@ const introRef3 = ref();
 
 const introTL = gsap.timeline({ paused: true });
 const endIntroAnimation = ref(false);
+
+const showGuide = ref(false);
 
 const contents = [
   {
@@ -1136,6 +1142,9 @@ onMounted(async () => {
     duration: 1,
     onComplete: () => {
       endIntroAnimation.value = true;
+      setTimeout(() => {
+        showGuide.value = true;
+      }, 1000);
     },
   });
 
@@ -1177,7 +1186,7 @@ watch(loadedModel, (newVal) => {
       onComplete: () => {
         gsap.set(fish.position, {
           x: 0,
-          z: 0,
+          z: -10,
         });
         introTL.play();
 
