@@ -131,6 +131,7 @@ let camera;
 let mixer;
 let mixerJellyfish, mixerTurtle;
 let fish;
+let palette;
 let chest1, chest2, chest3, chest4;
 
 const fishSpeed = 10;
@@ -146,12 +147,21 @@ scene.fog = new THREE.FogExp2(0x00bfff, 0.02);
 const params1 = { arc: 0 };
 const params2 = { arc: 0 };
 const params3 = { arc: 0 };
+const paramsPalette = { arc: 0 };
 const torusGeometry = new THREE.TorusGeometry(3, 0.1, 2, 40, params1.arc);
+const torusPaletteGeometry = new THREE.TorusGeometry(
+  5.5,
+  0.2,
+  2,
+  40,
+  params1.arc,
+);
 const torusMaterial = new THREE.MeshBasicMaterial({ color: 0x13003f });
 const torus1 = new THREE.Mesh(torusGeometry, torusMaterial);
 const torus2 = new THREE.Mesh(torusGeometry, torusMaterial);
 const torus3 = new THREE.Mesh(torusGeometry, torusMaterial);
 torus1.rotation.x = Math.PI * 0.5;
+const torusPalette = new THREE.Mesh(torusPaletteGeometry, torusMaterial);
 torus1.rotation.z = Math.PI * 0.5;
 torus1.position.set(12, 0.5, -55.5);
 scene.add(torus1);
@@ -163,6 +173,10 @@ torus3.rotation.x = Math.PI * 0.5;
 torus3.rotation.z = Math.PI * 0.5;
 torus3.position.set(-4, 0.5, -55.5);
 scene.add(torus3);
+torusPalette.rotation.x = Math.PI * 0.5;
+torusPalette.rotation.z = Math.PI * 0.5;
+torusPalette.position.set(50, 0.5, -23);
+scene.add(torusPalette);
 
 const arcTL1 = gsap.timeline({ paused: true });
 arcTL1.to(params1, {
@@ -201,6 +215,41 @@ arcTL3.to(params3, {
   },
   onComplete: () => {
     open("mailto:swc9803@gmail.com");
+  },
+});
+const arcTLPalette = gsap.timeline({ paused: true });
+arcTLPalette.to(paramsPalette, {
+  duration: 1,
+  arc: Math.PI * 2,
+  ease: "none",
+  onUpdate: () => {
+    torusPalette.geometry.dispose();
+    torusPalette.geometry = new THREE.TorusGeometry(
+      5.5,
+      0.2,
+      2,
+      40,
+      paramsPalette.arc,
+    );
+  },
+  onComplete: () => {
+    fish.traverse((node) => {
+      if (node instanceof THREE.Mesh) {
+        if (node.name === "Mesh") {
+          const randomColor = {
+            r: Math.random(),
+            g: Math.random(),
+            b: Math.random(),
+          };
+          gsap.to(node.material.color, {
+            r: randomColor.r,
+            g: randomColor.g,
+            b: randomColor.b,
+            duration: 1.5,
+          });
+        }
+      }
+    });
   },
 });
 
@@ -273,12 +322,13 @@ const loadFish = () => {
     fish = gltf.scene;
     fish.rotation.set(0, Math.PI, 0);
     fish.position.y = 2.5;
-    gltf.scene.traverse((node) => {
+    fish.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
         node.receiveShadow = true;
       }
     });
+
     scene.add(fish);
 
     loadedModel.value++;
@@ -514,11 +564,13 @@ const loadLogo = () => {
 };
 
 const loadDecoration = () => {
-  // 공사 중
-  gltfLoader.load("/construction.glb", (gltf) => {
-    gltf.scene.rotation.y = Math.PI * 1.05;
-    gltf.scene.position.set(60, 0, -23);
-    gltf.scene.scale.set(7, 7, 7);
+  // 팔레트
+  gltfLoader.load("/decoration/palette.glb", (gltf) => {
+    // gltf.scene.rotation.x = Math.PI * 1.5;
+    palette = gltf.scene;
+    gltf.scene.rotation.y = Math.PI * 0.5;
+    gltf.scene.position.set(50, 3.2, -23);
+    gltf.scene.scale.set(1, 1, 1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true;
@@ -906,6 +958,10 @@ const onTouchEnd = () => {
   }
 };
 
+let paletteOn = false;
+let logoAni1 = false;
+let logoAni2 = false;
+let logoAni3 = false;
 let offset = new THREE.Vector3(0, cameraY, -cameraZ);
 const clock = new THREE.Clock();
 const animate = () => {
@@ -1039,20 +1095,35 @@ const animate = () => {
           const info1distance = fish.position.distanceTo(torus1.position);
           const info2distance = fish.position.distanceTo(torus2.position);
           const info3distance = fish.position.distanceTo(torus3.position);
-          if (info1distance <= 5) {
+          if (info1distance <= 5 && !logoAni1) {
             arcTL1.play();
-          } else if (info1distance > 5) {
+            logoAni1 = true;
+          } else if (info1distance > 5 && logoAni1) {
             arcTL1.reverse();
+            logoAni1 = false;
           }
-          if (info2distance <= 5) {
+          if (info2distance <= 5 && !logoAni2) {
             arcTL2.play();
-          } else if (info2distance > 5) {
+            logoAni2 = true;
+          } else if (info2distance > 5 && logoAni2) {
             arcTL2.reverse();
+            logoAni2 = false;
           }
-          if (info3distance <= 5) {
+          if (info3distance <= 5 && !logoAni3) {
             arcTL3.play();
-          } else if (info3distance > 5) {
+            logoAni3 = true;
+          } else if (info3distance > 5 && logoAni3) {
             arcTL3.reverse();
+            logoAni3 = false;
+          }
+
+          const paletteDistance = fish.position.distanceTo(palette.position);
+          if (paletteDistance <= 5 && !paletteOn) {
+            arcTLPalette.play();
+            paletteOn = true;
+          } else if (paletteDistance > 5 && paletteOn) {
+            arcTLPalette.reverse();
+            paletteOn = false;
           }
         },
       });
