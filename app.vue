@@ -217,6 +217,7 @@ arcTL3.to(params3, {
     open("mailto:swc9803@gmail.com");
   },
 });
+const paletteScaleTL = gsap.timeline({ paused: true });
 const arcTLPalette = gsap.timeline({ paused: true });
 arcTLPalette.to(paramsPalette, {
   duration: 1,
@@ -233,6 +234,20 @@ arcTLPalette.to(paramsPalette, {
     );
   },
   onComplete: () => {
+    paletteScaleTL.to(palette.scale, {
+      x: 1.3,
+      y: 1.3,
+      z: 1.3,
+      duration: 0.3,
+    });
+    paletteScaleTL.to(palette.scale, {
+      x: 1,
+      y: 1,
+      z: 1,
+      duration: 0.3,
+    });
+    paletteScaleTL.play();
+
     fish.traverse((node) => {
       if (node instanceof THREE.Mesh) {
         if (node.name === "Mesh") {
@@ -566,10 +581,9 @@ const loadLogo = () => {
 const loadDecoration = () => {
   // 팔레트
   gltfLoader.load("/decoration/palette.glb", (gltf) => {
-    // gltf.scene.rotation.x = Math.PI * 1.5;
     palette = gltf.scene;
     gltf.scene.rotation.y = Math.PI * 0.5;
-    gltf.scene.position.set(50, 3.2, -23);
+    gltf.scene.position.set(50, 7, -23);
     gltf.scene.scale.set(1, 1, 1);
     gltf.scene.traverse((node) => {
       if (node.isMesh) {
@@ -1118,10 +1132,10 @@ const animate = () => {
           }
 
           const paletteDistance = fish.position.distanceTo(palette.position);
-          if (paletteDistance <= 5 && !paletteOn) {
+          if (paletteDistance <= 7 && !paletteOn) {
             arcTLPalette.play();
             paletteOn = true;
-          } else if (paletteDistance > 5 && paletteOn) {
+          } else if (paletteDistance > 7 && paletteOn) {
             arcTLPalette.reverse();
             paletteOn = false;
           }
