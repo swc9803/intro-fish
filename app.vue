@@ -86,14 +86,14 @@ const showGuide = ref(false);
 const contents = [
   {
     name: "New Portfolio",
-    route: "renewalsungpofo.firebaseapp",
+    route: "renewalsungpofo.firebaseapp.com",
     description: "저의 모든 프로젝트를 볼 수 있는 포트폴리오 사이트입니다.",
     webm: pofoWebm,
     mp4: pofoMp4,
   },
   {
     name: "Tommy Future esthetic",
-    route: "amazing-prototype.firebaseapp",
+    route: "amzg.vc",
     description:
       "다양한 인터랙션 효과를 사용해 Esthetic 프로그램을 소개하는 사이트입니다.",
     webm: tommyWebm,
@@ -101,7 +101,7 @@ const contents = [
   },
   {
     name: "Lotteria Font",
-    route: "lotteriafont",
+    route: "lotteriafont.com",
     description:
       "약 10만 명이 방문한 롯데리아의 새로운 폰트 출시를 기념해 제작한 사이트입니다.",
     webm: lotteriaWebm,
@@ -109,7 +109,7 @@ const contents = [
   },
   {
     name: "LAW 24",
-    route: "law24-prototype.firebaseapp",
+    route: "law24-prototype.firebaseapp.com",
     description: "사용자와 변호사를 자동으로 매칭 시켜주는 사이트입니다.",
     webm: lawWebm,
     mp4: lawMp4,
@@ -117,7 +117,7 @@ const contents = [
 ];
 
 const moveToPage = (route) => {
-  open(`https://${route}.com`);
+  open(`https://${route}`);
 };
 
 const canvasRef = ref();
