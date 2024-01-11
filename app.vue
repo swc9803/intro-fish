@@ -93,7 +93,7 @@ const contents = [
   },
   {
     name: "Tommy Future esthetic",
-    route: "amzg.vc",
+    route: "amazingvictoria.com",
     description:
       "다양한 인터랙션 효과를 사용해 Esthetic 프로그램을 소개하는 사이트입니다.",
     webm: tommyWebm,
@@ -154,7 +154,7 @@ const torusPaletteGeometry = new THREE.TorusGeometry(
   0.2,
   2,
   40,
-  params1.arc,
+  params1.arc
 );
 const torusMaterial = new THREE.MeshBasicMaterial({ color: 0x13003f });
 const torus1 = new THREE.Mesh(torusGeometry, torusMaterial);
@@ -230,7 +230,7 @@ arcTLPalette.to(paramsPalette, {
       0.2,
       2,
       40,
-      paramsPalette.arc,
+      paramsPalette.arc
     );
   },
   onComplete: () => {
@@ -301,7 +301,7 @@ const gltfLoader = new GLTFLoader();
 const dracoLoader = new DRACOLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
 dracoLoader.setDecoderPath(
-  "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/js/libs/draco/",
+  "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/js/libs/draco/"
 );
 // chest
 const loadChest = (x, z) => {
@@ -651,7 +651,7 @@ const loadDecoration = () => {
         duration: 15,
         ease: "power1.out",
       },
-      ">",
+      ">"
     );
     tl.to(
       gltf.scene.rotation,
@@ -659,7 +659,7 @@ const loadDecoration = () => {
         y: Math.PI * 1.5,
         duration: 1.5,
       },
-      "<",
+      "<"
     );
     tl.to(
       gltf.scene.rotation,
@@ -668,7 +668,7 @@ const loadDecoration = () => {
         duration: 1.5,
         delay: 15,
       },
-      "<",
+      "<"
     );
 
     loadedModel.value++;
@@ -1145,7 +1145,7 @@ const animate = () => {
       const lookAtPoint = new THREE.Vector3(
         intersectionPoint.x,
         fish.position.y,
-        intersectionPoint.z,
+        intersectionPoint.z
       );
       fish.lookAt(lookAtPoint);
     }
@@ -1182,7 +1182,7 @@ onMounted(async () => {
       duration: 0.5,
       delay: 0.5,
     },
-    "<",
+    "<"
   );
 
   // 인트로
@@ -1205,7 +1205,7 @@ onMounted(async () => {
       duration: 1,
       delay: 0.5,
     },
-    "<",
+    "<"
   );
   introTL.to(introRef2.value.intro2, {
     filter: "blur(1em)",
@@ -1220,7 +1220,7 @@ onMounted(async () => {
       duration: 1,
       delay: 0.5,
     },
-    "<",
+    "<"
   );
   introTL.to(introRef3.value.intro3, {
     filter: "blur(1em)",
@@ -1254,7 +1254,7 @@ onMounted(async () => {
     75,
     canvasRef.value.offsetWidth / canvasRef.value.offsetHeight,
     0.1,
-    1000,
+    1000
   );
 
   onResize();
